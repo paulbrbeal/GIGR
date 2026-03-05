@@ -1,0 +1,3806 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GIGR — Track Every Live Moment</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0f0e0d;
+    --paper: #f5f0e8;
+    --cream: #ede8da;
+    --amber: #e8963a;
+    --amber-dark: #c4782a;
+    --rust: #c0392b;
+    --sage: #4a6741;
+    --muted: #8c8272;
+    --card: #ffffff;
+    --border: #d8d2c4;
+    --star: #e8963a;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    min-height: 100vh;
+  }
+
+  /* NAV */
+  nav {
+    background: var(--ink);
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    gap: 2.5rem;
+    height: 52px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .nav-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.6rem;
+    color: var(--amber);
+    letter-spacing: 2px;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .nav-logo span { color: white; }
+  nav a {
+    color: #c8bfaa;
+    text-decoration: none;
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    transition: color 0.2s;
+    cursor: pointer;
+  }
+  nav a:hover, nav a.active { color: white; }
+  .nav-right {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+  }
+  .nav-avatar {
+    width: 30px; height: 30px;
+    border-radius: 50%;
+    background: var(--amber);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--ink);
+    cursor: pointer;
+  }
+
+  /* PAGE SYSTEM */
+  .page { display: none; }
+  .page.active { display: block; }
+
+  /* HERO — HOME */
+  .hero {
+    background: var(--ink);
+    padding: 4rem 2rem 3rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: repeating-linear-gradient(
+      -45deg, transparent, transparent 40px,
+      rgba(232,150,58,0.04) 40px, rgba(232,150,58,0.04) 41px
+    );
+  }
+  .hero-label {
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--amber);
+    margin-bottom: 1rem;
+    position: relative;
+  }
+  .hero h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(3rem, 8vw, 6rem);
+    color: white;
+    line-height: 0.9;
+    letter-spacing: 4px;
+    position: relative;
+    margin-bottom: 0.5rem;
+  }
+  .hero h1 em {
+    font-style: normal;
+    color: var(--amber);
+    display: block;
+  }
+  .hero-sub {
+    color: #8c8272;
+    font-size: 0.95rem;
+    max-width: 460px;
+    margin: 1rem auto 2rem;
+    position: relative;
+    line-height: 1.6;
+  }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.7rem 1.6rem;
+    border-radius: 3px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    cursor: pointer;
+    text-decoration: none;
+    border: none;
+    transition: all 0.2s;
+  }
+  .btn-amber { background: var(--amber); color: var(--ink); }
+  .btn-amber:hover { background: var(--amber-dark); }
+  .btn-outline { background: transparent; color: white; border: 1px solid rgba(255,255,255,0.3); }
+  .btn-outline:hover { border-color: white; }
+  .hero-btns { display: flex; gap: 1rem; justify-content: center; position: relative; }
+
+  /* STATS TICKER */
+  .stats-bar {
+    background: var(--amber);
+    padding: 0.6rem 2rem;
+    display: flex;
+    gap: 3rem;
+    justify-content: center;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink);
+  }
+  .stats-bar span b { font-size: 1rem; margin-right: 0.3rem; }
+
+  /* MAIN LAYOUT */
+  .container { max-width: 1100px; margin: 0 auto; padding: 2rem; }
+  .two-col { display: grid; grid-template-columns: 1fr 320px; gap: 2rem; }
+
+  /* SECTION HEADS */
+  .section-head {
+    display: flex; align-items: baseline; justify-content: space-between;
+    margin-bottom: 1.2rem;
+    border-bottom: 2px solid var(--ink);
+    padding-bottom: 0.6rem;
+  }
+  .section-head h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.4rem;
+    letter-spacing: 2px;
+  }
+  .section-head a {
+    font-size: 0.75rem;
+    color: var(--amber-dark);
+    text-decoration: none;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+  }
+
+  /* FEED ITEMS */
+  .feed { display: flex; flex-direction: column; gap: 0; }
+  .feed-item {
+    display: grid;
+    grid-template-columns: 60px 1fr;
+    gap: 1rem;
+    padding: 1.2rem 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .feed-poster {
+    width: 60px; height: 80px;
+    background: var(--ink);
+    border-radius: 2px;
+    overflow: hidden;
+    position: relative;
+    flex-shrink: 0;
+  }
+  .feed-poster-img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.55rem;
+    font-weight: 700;
+    color: white;
+    text-align: center;
+    padding: 4px;
+    line-height: 1.2;
+  }
+  .poster-a { background: linear-gradient(135deg, #1a1a2e, #16213e); }
+  .poster-b { background: linear-gradient(135deg, #2d1b69, #11998e); }
+  .poster-c { background: linear-gradient(135deg, #c0392b, #8e44ad); }
+  .poster-d { background: linear-gradient(135deg, #f39c12, #d35400); }
+  .poster-e { background: linear-gradient(135deg, #1abc9c, #2c3e50); }
+  .poster-f { background: linear-gradient(135deg, #6c3483, #1a5276); }
+
+  .feed-meta { display: flex; flex-direction: column; gap: 0.3rem; }
+  .feed-user {
+    font-size: 0.75rem;
+    color: var(--muted);
+  }
+  .feed-user strong { color: var(--ink); font-weight: 600; cursor: pointer; }
+  .feed-user strong:hover { color: var(--amber-dark); }
+  .feed-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.05rem;
+    line-height: 1.2;
+    cursor: pointer;
+  }
+  .feed-title:hover { color: var(--amber-dark); }
+  .feed-venue {
+    font-size: 0.78rem;
+    color: var(--muted);
+  }
+  .stars { color: var(--star); font-size: 0.85rem; letter-spacing: 1px; }
+  .feed-review {
+    font-size: 0.83rem;
+    line-height: 1.55;
+    color: #3a3530;
+    margin-top: 0.2rem;
+    font-style: italic;
+  }
+  .feed-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 0.4rem;
+    align-items: center;
+  }
+  .feed-action {
+    font-size: 0.72rem;
+    color: var(--muted);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    transition: color 0.15s;
+  }
+  .feed-action:hover { color: var(--ink); }
+  .feed-tag {
+    display: inline-block;
+    background: var(--cream);
+    border: 1px solid var(--border);
+    padding: 0.1rem 0.5rem;
+    border-radius: 2px;
+    font-size: 0.68rem;
+    color: var(--muted);
+    text-transform: lowercase;
+    cursor: pointer;
+  }
+  .feed-tag:hover { background: var(--ink); color: white; }
+
+  /* SIDEBAR */
+  .sidebar { display: flex; flex-direction: column; gap: 1.5rem; }
+  .sidebar-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 1.2rem;
+  }
+  .sidebar-card h3 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.1rem;
+    letter-spacing: 2px;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 0.5rem;
+  }
+
+  /* TRENDING */
+  .trending-list { display: flex; flex-direction: column; gap: 0.7rem; }
+  .trending-item {
+    display: flex; align-items: center; gap: 0.75rem;
+    cursor: pointer;
+  }
+  .trending-rank {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.2rem;
+    color: var(--border);
+    width: 20px;
+    text-align: center;
+    flex-shrink: 0;
+  }
+  .trending-thumb {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.6rem;
+    font-weight: 700;
+    color: white;
+    text-align: center;
+    line-height: 1.1;
+  }
+  .trending-info { flex: 1; }
+  .trending-name { font-size: 0.85rem; font-weight: 600; line-height: 1.2; }
+  .trending-meta { font-size: 0.72rem; color: var(--muted); }
+  .trending-item:hover .trending-name { color: var(--amber-dark); }
+
+  /* MINI POSTER GRID */
+  .poster-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; }
+  .poster-mini {
+    aspect-ratio: 3/4;
+    border-radius: 2px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.45rem;
+    font-weight: 700;
+    color: rgba(255,255,255,0.6);
+    text-align: center;
+    padding: 3px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.2s;
+  }
+  .poster-mini:hover { transform: scale(1.05); z-index: 2; }
+
+  /* PROFILE PAGE */
+  .profile-header {
+    background: var(--ink);
+    padding: 0;
+    position: relative;
+  }
+  .profile-banner {
+    height: 200px;
+    background: linear-gradient(135deg, #1a1a1a 0%, #2d1b00 50%, #1a0a0a 100%);
+    position: relative;
+    overflow: hidden;
+  }
+  .profile-banner::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: repeating-linear-gradient(
+      90deg, transparent, transparent 60px,
+      rgba(232,150,58,0.06) 60px, rgba(232,150,58,0.06) 61px
+    );
+  }
+  .profile-info {
+    padding: 0 2rem 1.5rem;
+    display: flex;
+    align-items: flex-end;
+    gap: 1.5rem;
+    position: relative;
+  }
+  .profile-avatar {
+    width: 80px; height: 80px;
+    border-radius: 50%;
+    background: var(--amber);
+    border: 4px solid var(--ink);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2rem;
+    color: var(--ink);
+    margin-top: -40px;
+    flex-shrink: 0;
+    position: relative;
+  }
+  .profile-details { flex: 1; padding-bottom: 0.3rem; }
+  .profile-name {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.5rem;
+    color: white;
+  }
+  .profile-handle { font-size: 0.8rem; color: #7a7060; }
+  .profile-bio { font-size: 0.82rem; color: #9a9080; margin-top: 0.3rem; }
+  .profile-stats {
+    display: flex;
+    gap: 2rem;
+    padding: 1rem 2rem;
+    background: rgba(255,255,255,0.04);
+    border-top: 1px solid rgba(255,255,255,0.07);
+  }
+  .pstat { text-align: center; cursor: pointer; }
+  .pstat-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.6rem;
+    color: white;
+    line-height: 1;
+  }
+  .pstat-label { font-size: 0.68rem; color: #6a6050; text-transform: uppercase; letter-spacing: 0.1em; }
+  .pstat:hover .pstat-num { color: var(--amber); }
+
+  /* DIARY GRID */
+  .diary-year-head {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2rem;
+    letter-spacing: 4px;
+    color: var(--ink);
+    margin: 2rem 0 1rem;
+    display: flex; align-items: center; gap: 1rem;
+  }
+  .diary-year-head::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+  .diary-month {
+    margin-bottom: 1.5rem;
+  }
+  .diary-month-label {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--muted);
+    margin-bottom: 0.6rem;
+    font-weight: 600;
+  }
+  .diary-entries { display: flex; flex-direction: column; gap: 0; }
+  .diary-entry {
+    display: grid;
+    grid-template-columns: 28px 50px 1fr auto;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.6rem 0;
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+    transition: background 0.15s;
+    border-radius: 2px;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
+  .diary-entry:hover { background: var(--cream); }
+  .diary-day {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.1rem;
+    color: var(--muted);
+    text-align: center;
+  }
+  .diary-entry-poster {
+    width: 50px; height: 66px;
+    border-radius: 2px;
+  }
+  .diary-entry-info { }
+  .diary-entry-band { font-weight: 600; font-size: 0.9rem; }
+  .diary-entry-venue { font-size: 0.75rem; color: var(--muted); }
+  .diary-entry-stars { color: var(--star); font-size: 0.8rem; }
+  .diary-entry-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.4rem;
+  }
+  .icon-btn {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    background: transparent;
+    border: 1px solid var(--border);
+    cursor: pointer;
+    font-size: 0.75rem;
+    color: var(--muted);
+    transition: all 0.15s;
+  }
+  .icon-btn:hover { background: var(--ink); color: white; border-color: var(--ink); }
+  .icon-btn.liked { background: var(--rust); color: white; border-color: var(--rust); }
+
+  /* BAND PAGE */
+  .band-header {
+    background: var(--ink);
+    padding: 2.5rem 2rem 0;
+    position: relative;
+    overflow: hidden;
+  }
+  .band-header::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 70% 50%, rgba(232,150,58,0.15) 0%, transparent 70%);
+  }
+  .band-header-inner {
+    display: grid;
+    grid-template-columns: 140px 1fr;
+    gap: 2rem;
+    max-width: 1100px;
+    margin: 0 auto;
+    position: relative;
+  }
+  .band-art {
+    width: 140px; height: 140px;
+    border-radius: 4px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.2rem;
+    color: white;
+    text-align: center;
+    letter-spacing: 2px;
+    line-height: 1.2;
+  }
+  .band-title { color: white; }
+  .band-title h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 2.5rem;
+    line-height: 1;
+  }
+  .band-title .origin { font-size: 0.8rem; color: #7a7060; margin: 0.4rem 0; }
+  .band-genres { display: flex; gap: 0.5rem; flex-wrap: wrap; margin: 0.8rem 0; }
+  .genre-pill {
+    padding: 0.2rem 0.7rem;
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 20px;
+    font-size: 0.7rem;
+    color: #c0b8a8;
+    cursor: pointer;
+  }
+  .genre-pill:hover { background: rgba(255,255,255,0.1); }
+  .band-actions { display: flex; gap: 0.75rem; margin-top: 1rem; }
+  .band-nav {
+    display: flex;
+    gap: 0;
+    border-top: 1px solid rgba(255,255,255,0.08);
+    margin-top: 1.5rem;
+    max-width: 1100px;
+    margin-left: auto; margin-right: auto;
+    position: relative;
+  }
+  .band-nav a {
+    padding: 0.8rem 1.2rem;
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-weight: 500;
+    color: #7a7060;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: all 0.15s;
+  }
+  .band-nav a:hover { color: white; }
+  .band-nav a.active { color: var(--amber); border-bottom-color: var(--amber); }
+  .band-stats-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: var(--border);
+    margin-bottom: 2rem;
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .band-stat {
+    background: var(--card);
+    padding: 1rem;
+    text-align: center;
+  }
+  .band-stat-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2rem;
+    color: var(--ink);
+    line-height: 1;
+  }
+  .band-stat-label { font-size: 0.7rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; }
+
+  /* STAR RATING DISPLAY */
+  .rating-bar { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.5rem; }
+  .rating-label { font-size: 0.75rem; width: 20px; text-align: right; color: var(--muted); font-weight: 600; }
+  .rating-track {
+    flex: 1;
+    height: 6px;
+    background: var(--cream);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .rating-fill {
+    height: 100%;
+    background: var(--amber);
+    border-radius: 3px;
+  }
+  .rating-count { font-size: 0.72rem; color: var(--muted); width: 30px; }
+
+  /* LISTS PAGE */
+  .list-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 1.2rem;
+    display: grid;
+    grid-template-columns: 110px 1fr;
+    gap: 1.2rem;
+    cursor: pointer;
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+  .list-card:hover { border-color: var(--amber); box-shadow: 0 2px 12px rgba(0,0,0,0.08); }
+  .list-posters {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 2px;
+    height: 74px;
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .list-poster-mini {
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.4rem;
+    font-weight: 700;
+    color: rgba(255,255,255,0.5);
+    text-align: center;
+  }
+  .list-info { }
+  .list-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.05rem;
+    line-height: 1.2;
+    margin-bottom: 0.3rem;
+  }
+  .list-by { font-size: 0.75rem; color: var(--muted); margin-bottom: 0.4rem; }
+  .list-by strong { color: var(--ink); font-weight: 600; }
+  .list-desc { font-size: 0.8rem; color: #5a5248; line-height: 1.5; }
+  .list-footer {
+    display: flex; align-items: center; gap: 1rem;
+    margin-top: 0.6rem;
+  }
+  .list-count {
+    font-size: 0.7rem;
+    color: var(--muted);
+    font-weight: 600;
+    letter-spacing: 0.05em;
+  }
+  .list-tag { }
+
+  /* DISCOVER */
+  .discover-filters {
+    display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1.5rem;
+  }
+  .filter-btn {
+    padding: 0.35rem 0.9rem;
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    cursor: pointer;
+    background: white;
+    color: var(--ink);
+    transition: all 0.15s;
+    letter-spacing: 0.03em;
+  }
+  .filter-btn:hover, .filter-btn.active {
+    background: var(--ink);
+    color: white;
+    border-color: var(--ink);
+  }
+  .band-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 1rem;
+  }
+  .band-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .band-card:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
+  .band-card-art {
+    aspect-ratio: 1;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1rem;
+    color: white;
+    text-align: center;
+    letter-spacing: 2px;
+    line-height: 1.3;
+    padding: 0.5rem;
+  }
+  .band-card-info { padding: 0.7rem; }
+  .band-card-name { font-weight: 600; font-size: 0.85rem; margin-bottom: 0.2rem; }
+  .band-card-genre { font-size: 0.72rem; color: var(--muted); }
+  .band-card-rating { font-size: 0.72rem; color: var(--star); margin-top: 0.2rem; }
+
+  /* LOG GIG MODAL */
+  .modal-overlay {
+    position: fixed; inset: 0;
+    background: rgba(15,14,13,0.8);
+    z-index: 200;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal {
+    background: var(--paper);
+    border-radius: 4px;
+    width: 100%;
+    max-width: 520px;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+  }
+  .modal-head {
+    background: var(--ink);
+    padding: 1.2rem 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .modal-head h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.3rem;
+    letter-spacing: 2px;
+    color: white;
+  }
+  .modal-close {
+    color: #7a7060;
+    cursor: pointer;
+    font-size: 1.2rem;
+    line-height: 1;
+    transition: color 0.15s;
+  }
+  .modal-close:hover { color: white; }
+  .modal-body { padding: 1.5rem; }
+  .form-group { margin-bottom: 1.2rem; }
+  .form-label {
+    display: block;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-weight: 600;
+    color: var(--muted);
+    margin-bottom: 0.4rem;
+  }
+  .form-input {
+    width: 100%;
+    padding: 0.6rem 0.8rem;
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    background: white;
+    color: var(--ink);
+    outline: none;
+    transition: border-color 0.15s;
+  }
+  .form-input:focus { border-color: var(--amber); }
+  .star-picker {
+    display: flex;
+    gap: 0.3rem;
+    font-size: 1.6rem;
+    cursor: pointer;
+  }
+  .star-pick { color: var(--border); transition: color 0.1s; cursor: pointer; }
+  .star-pick.lit, .star-pick:hover ~ .star-pick-reset,
+  .star-picker:hover .star-pick { color: var(--star); }
+  .star-pick:hover ~ .star-pick { color: var(--border); }
+  .form-textarea {
+    width: 100%;
+    padding: 0.6rem 0.8rem;
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.85rem;
+    background: white;
+    color: var(--ink);
+    resize: vertical;
+    min-height: 100px;
+    outline: none;
+    line-height: 1.6;
+    transition: border-color 0.15s;
+  }
+  .form-textarea:focus { border-color: var(--amber); }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .checkbox-group { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .check-opt {
+    display: flex; align-items: center; gap: 0.4rem;
+    padding: 0.3rem 0.7rem;
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    font-size: 0.78rem;
+    cursor: pointer;
+    transition: all 0.15s;
+    user-select: none;
+  }
+  .check-opt input { display: none; }
+  .check-opt:hover, .check-opt.checked {
+    background: var(--ink); color: white; border-color: var(--ink);
+  }
+  .modal-footer {
+    padding: 1rem 1.5rem;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.75rem;
+  }
+  .btn-ghost {
+    background: transparent;
+    color: var(--muted);
+    border: 1px solid var(--border);
+    padding: 0.6rem 1.2rem;
+    border-radius: 2px;
+    font-size: 0.8rem;
+    cursor: pointer;
+  }
+
+  /* STATS PAGE (PRO) */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+  .stat-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 1.2rem;
+    text-align: center;
+  }
+  .stat-big {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 3rem;
+    line-height: 1;
+    color: var(--ink);
+  }
+  .stat-card-label { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); margin-top: 0.2rem; }
+  .bar-chart { display: flex; flex-direction: column; gap: 0.5rem; }
+  .bar-row { display: flex; align-items: center; gap: 0.8rem; }
+  .bar-label { font-size: 0.78rem; width: 100px; text-align: right; font-weight: 500; }
+  .bar-track { flex: 1; height: 20px; background: var(--cream); border-radius: 2px; overflow: hidden; }
+  .bar-fill {
+    height: 100%;
+    background: var(--amber);
+    border-radius: 2px;
+    display: flex; align-items: center; padding-left: 0.4rem;
+    font-size: 0.68rem;
+    font-weight: 700;
+    color: var(--ink);
+    transition: width 0.6s ease;
+  }
+  .pro-badge {
+    display: inline-flex; align-items: center; gap: 0.3rem;
+    background: var(--amber);
+    color: var(--ink);
+    padding: 0.2rem 0.6rem;
+    border-radius: 2px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 720px) {
+    .two-col { grid-template-columns: 1fr; }
+    .sidebar { display: none; }
+    .band-header-inner { grid-template-columns: 1fr; }
+    .stats-grid { grid-template-columns: 1fr 1fr; }
+    .band-stats-row { grid-template-columns: 1fr 1fr; }
+  }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .page.active > * { animation: fadeUp 0.3s ease forwards; }
+
+  /* FOLLOW BUTTON */
+  .follow-btn {
+    padding: 0.45rem 1.2rem;
+    border-radius: 2px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    cursor: pointer;
+    border: 1px solid rgba(255,255,255,0.3);
+    background: transparent;
+    color: white;
+    transition: all 0.15s;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+  .follow-btn:hover, .follow-btn.following {
+    background: var(--amber);
+    border-color: var(--amber);
+    color: var(--ink);
+  }
+
+  /* NOTICE BADGE */
+  .notice {
+    background: rgba(232,150,58,0.12);
+    border: 1px solid rgba(232,150,58,0.3);
+    border-radius: 3px;
+    padding: 0.7rem 1rem;
+    font-size: 0.82rem;
+    color: #7a4a10;
+    margin-bottom: 1.5rem;
+  }
+
+  /* HALF STAR */
+  .half { position: relative; display: inline-block; }
+
+  /* ═══ LIST DETAIL PAGE ═══ */
+  .list-detail-hero {
+    background: var(--ink);
+    padding: 2.5rem 2rem 0;
+    position: relative;
+    overflow: hidden;
+  }
+  .list-detail-hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: repeating-linear-gradient(
+      -60deg, transparent, transparent 50px,
+      rgba(232,150,58,0.04) 50px, rgba(232,150,58,0.04) 51px
+    );
+  }
+  .list-detail-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    position: relative;
+  }
+  .list-detail-back {
+    font-size: 0.72rem;
+    color: #7a7060;
+    cursor: pointer;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-weight: 600;
+    margin-bottom: 1.2rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    transition: color 0.15s;
+  }
+  .list-detail-back:hover { color: var(--amber); }
+  .list-detail-meta {
+    display: grid;
+    grid-template-columns: 180px 1fr;
+    gap: 2rem;
+    align-items: start;
+  }
+  .list-detail-mosaic {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 3px;
+    border-radius: 3px;
+    overflow: hidden;
+    aspect-ratio: 1;
+    width: 180px;
+  }
+  .list-detail-mosaic-item {
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.55rem; font-weight: 700;
+    color: rgba(255,255,255,0.5);
+    text-align: center; line-height: 1.2;
+  }
+  .list-detail-info { padding-bottom: 1rem; }
+  .list-detail-type {
+    font-size: 0.68rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--amber);
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+  .list-detail-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 2.2rem;
+    color: white;
+    line-height: 1.1;
+    margin-bottom: 0.6rem;
+  }
+  .list-detail-byline {
+    font-size: 0.82rem;
+    color: #9a9080;
+    margin-bottom: 0.8rem;
+  }
+  .list-detail-byline strong { color: #d0c8b8; cursor: pointer; }
+  .list-detail-byline strong:hover { color: var(--amber); }
+  .list-detail-desc {
+    font-size: 0.88rem;
+    color: #8a8070;
+    line-height: 1.65;
+    max-width: 520px;
+    margin-bottom: 1.2rem;
+  }
+  .list-detail-actions { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+  .list-detail-stats {
+    display: flex;
+    gap: 2rem;
+    padding: 1rem 0;
+    border-top: 1px solid rgba(255,255,255,0.07);
+    max-width: 1100px;
+    margin: 0 auto;
+    position: relative;
+  }
+  .list-detail-stat { font-size: 0.78rem; color: #7a7060; }
+  .list-detail-stat b { color: white; }
+
+  /* Ranked list entries */
+  .ranked-list { max-width: 1100px; margin: 0 auto; padding: 2rem; }
+  .ranked-entry {
+    display: grid;
+    grid-template-columns: 52px 70px 1fr auto;
+    gap: 1.2rem;
+    align-items: start;
+    padding: 1.4rem 0;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+  }
+  .ranked-entry:hover { background: none; }
+  .rank-number {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.8rem;
+    line-height: 1;
+    color: var(--border);
+    text-align: right;
+    padding-top: 4px;
+    transition: color 0.2s;
+  }
+  .ranked-entry:hover .rank-number { color: var(--amber); }
+  .ranked-poster {
+    width: 70px; height: 93px;
+    border-radius: 2px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.5rem; font-weight: 700;
+    color: rgba(255,255,255,0.6);
+    text-align: center; line-height: 1.3;
+    cursor: pointer;
+    transition: transform 0.2s;
+    flex-shrink: 0;
+  }
+  .ranked-entry:hover .ranked-poster { transform: scale(1.03); }
+  .ranked-info { padding-top: 2px; }
+  .ranked-band {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.15rem;
+    cursor: pointer;
+    line-height: 1.2;
+    margin-bottom: 0.2rem;
+  }
+  .ranked-band:hover { color: var(--amber-dark); }
+  .ranked-venue { font-size: 0.78rem; color: var(--muted); margin-bottom: 0.4rem; }
+  .ranked-note {
+    font-size: 0.84rem;
+    color: #4a4540;
+    line-height: 1.6;
+    font-style: italic;
+    max-width: 560px;
+  }
+  .ranked-note::before { content: '"'; }
+  .ranked-note::after  { content: '"'; }
+  .ranked-meta {
+    display: flex; align-items: center; gap: 0.75rem;
+    margin-top: 0.6rem;
+  }
+  .ranked-side {
+    text-align: right;
+    padding-top: 4px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.5rem;
+  }
+  .ranked-rating { color: var(--star); font-size: 0.85rem; }
+  .ranked-log-count { font-size: 0.72rem; color: var(--muted); white-space: nowrap; }
+
+  /* ═══ BANDS DIRECTORY PAGE ═══ */
+  .bands-dir-hero {
+    background: var(--ink);
+    padding: 2rem 2rem 1.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .bands-dir-hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 80% 50%, rgba(232,150,58,0.08) 0%, transparent 60%);
+  }
+  .bands-dir-inner {
+    max-width: 1100px; margin: 0 auto; position: relative;
+  }
+  .bands-dir-hero h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2rem; letter-spacing: 4px; color: white;
+    margin-bottom: 0.3rem;
+  }
+  .bands-dir-hero p { font-size: 0.82rem; color: #7a7060; }
+  .bands-search-bar {
+    display: flex; gap: 1rem; margin-top: 1.2rem; align-items: center;
+  }
+  .bands-search-input {
+    flex: 1; max-width: 420px;
+    padding: 0.6rem 1rem;
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 2px;
+    color: white;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.88rem;
+    outline: none;
+  }
+  .bands-search-input::placeholder { color: #6a6050; }
+  .bands-search-input:focus { border-color: var(--amber); }
+  .alpha-bar {
+    background: var(--cream);
+    border-bottom: 1px solid var(--border);
+    padding: 0.5rem 2rem;
+    display: flex; gap: 0.1rem; flex-wrap: wrap;
+    max-width: 100%;
+  }
+  .alpha-btn {
+    width: 28px; height: 28px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.72rem; font-weight: 700;
+    border-radius: 2px;
+    cursor: pointer;
+    color: var(--muted);
+    border: none; background: none;
+    transition: all 0.12s;
+  }
+  .alpha-btn:hover, .alpha-btn.active { background: var(--ink); color: white; }
+  .alpha-btn.has-bands { color: var(--ink); }
+  .bands-dir-body { max-width: 1100px; margin: 0 auto; padding: 0 2rem 2rem; }
+  .bands-dir-section { margin-top: 2rem; }
+  .bands-dir-letter {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 3rem; letter-spacing: 4px;
+    color: var(--border);
+    line-height: 1;
+    margin-bottom: 0.8rem;
+    border-bottom: 2px solid var(--border);
+    padding-bottom: 0.3rem;
+  }
+  .bands-dir-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .bands-dir-item {
+    background: var(--card);
+    padding: 0.9rem 1rem;
+    display: flex; align-items: center; gap: 0.75rem;
+    cursor: pointer;
+    transition: background 0.12s;
+  }
+  .bands-dir-item:hover { background: var(--cream); }
+  .bands-dir-thumb {
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.6rem; font-weight: 700;
+    color: rgba(255,255,255,0.7);
+    text-align: center; line-height: 1.1;
+    flex-shrink: 0;
+  }
+  .bands-dir-name { font-weight: 600; font-size: 0.88rem; line-height: 1.2; }
+  .bands-dir-sub { font-size: 0.7rem; color: var(--muted); }
+  .bands-dir-rating { font-size: 0.68rem; color: var(--star); margin-top: 0.1rem; }
+
+  /* Featured band card (top of bands page) */
+  .bands-featured {
+    background: var(--ink);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 3px;
+    overflow: hidden;
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    cursor: pointer;
+    transition: border-color 0.15s;
+    margin-bottom: 1.5rem;
+  }
+  .bands-featured:hover { border-color: var(--amber); }
+  .bands-featured-art {
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1rem; letter-spacing: 2px;
+    color: rgba(255,255,255,0.5);
+    text-align: center; line-height: 1.3;
+    padding: 0.5rem;
+  }
+  .bands-featured-info { padding: 1rem 1.2rem; }
+  .bands-featured-label {
+    font-size: 0.62rem; text-transform: uppercase;
+    letter-spacing: 0.15em; color: var(--amber);
+    font-weight: 700; margin-bottom: 0.3rem;
+  }
+  .bands-featured-name {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.2rem; color: white; margin-bottom: 0.3rem;
+  }
+  .bands-featured-desc { font-size: 0.78rem; color: #7a7060; line-height: 1.5; }
+
+  /* ═══ FOOTER ═══ */
+  .site-footer {
+    background: var(--ink);
+    color: #6a6050;
+    margin-top: 4rem;
+    padding: 3rem 2rem 2rem;
+    font-size: 0.8rem;
+  }
+  .footer-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .footer-top {
+    display: grid;
+    grid-template-columns: 200px 1fr 1fr 1fr;
+    gap: 2.5rem;
+    padding-bottom: 2.5rem;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .footer-brand-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2rem;
+    letter-spacing: 3px;
+    color: var(--amber);
+    line-height: 1;
+    margin-bottom: 0.7rem;
+  }
+  .footer-brand-logo span { color: white; }
+  .footer-brand-tagline {
+    font-size: 0.78rem;
+    color: #5a5040;
+    line-height: 1.6;
+    margin-bottom: 1.2rem;
+  }
+  .footer-social {
+    display: flex;
+    gap: 0.5rem;
+  }
+  .footer-social-btn {
+    width: 32px; height: 32px;
+    border-radius: 2px;
+    border: 1px solid rgba(255,255,255,0.1);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.75rem;
+    cursor: pointer;
+    color: #6a6050;
+    transition: all 0.15s;
+    text-decoration: none;
+  }
+  .footer-social-btn:hover { border-color: var(--amber); color: var(--amber); }
+  .footer-col-head {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 0.9rem;
+    letter-spacing: 2px;
+    color: white;
+    margin-bottom: 1rem;
+  }
+  .footer-links {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .footer-links a {
+    color: #6a6050;
+    text-decoration: none;
+    font-size: 0.8rem;
+    transition: color 0.15s;
+    cursor: pointer;
+  }
+  .footer-links a:hover { color: var(--amber); }
+  .footer-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 1.5rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  .footer-bottom-left { font-size: 0.75rem; color: #4a4030; }
+  .footer-bottom-left strong { color: #6a6050; }
+  .footer-bottom-right {
+    display: flex;
+    gap: 1.5rem;
+  }
+  .footer-bottom-right a {
+    font-size: 0.72rem;
+    color: #4a4030;
+    text-decoration: none;
+    cursor: pointer;
+    transition: color 0.15s;
+  }
+  .footer-bottom-right a:hover { color: #6a6050; }
+  .footer-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    background: rgba(232,150,58,0.1);
+    border: 1px solid rgba(232,150,58,0.2);
+    color: var(--amber);
+    padding: 0.2rem 0.6rem;
+    border-radius: 2px;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin-bottom: 0.8rem;
+    display: inline-block;
+  }
+
+  /* ═══ CALENDAR PAGE ═══ */
+  .cal-header {
+    background: var(--ink);
+    padding: 1.5rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .cal-nav-btn {
+    background: none;
+    border: 1px solid rgba(255,255,255,0.2);
+    color: white;
+    width: 34px; height: 34px;
+    border-radius: 2px;
+    cursor: pointer;
+    font-size: 1rem;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.15s;
+  }
+  .cal-nav-btn:hover { background: var(--amber); border-color: var(--amber); color: var(--ink); }
+  .cal-month-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.8rem;
+    color: white;
+    letter-spacing: 4px;
+    text-align: center;
+    flex: 1;
+  }
+  .cal-month-title span { color: var(--amber); }
+
+  .cal-view-toggle {
+    display: flex;
+    gap: 0;
+    background: rgba(255,255,255,0.07);
+    border-radius: 3px;
+    overflow: hidden;
+    margin-left: 1.5rem;
+  }
+  .cal-view-btn {
+    padding: 0.4rem 0.9rem;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    cursor: pointer;
+    color: #8a8070;
+    border: none;
+    background: none;
+    transition: all 0.15s;
+  }
+  .cal-view-btn.active { background: var(--amber); color: var(--ink); }
+
+  .cal-filters {
+    background: var(--cream);
+    border-bottom: 1px solid var(--border);
+    padding: 0.75rem 2rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+  .cal-filters-label {
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    margin-right: 0.5rem;
+  }
+
+  /* MONTH GRID */
+  .cal-grid-wrap { padding: 1.5rem 2rem; max-width: 1100px; margin: 0 auto; }
+  .cal-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 0;
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .cal-day-header {
+    background: var(--ink);
+    color: #8a8070;
+    text-align: center;
+    padding: 0.5rem;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  .cal-cell {
+    min-height: 110px;
+    background: var(--card);
+    border-right: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 0.4rem;
+    position: relative;
+    cursor: default;
+    transition: background 0.1s;
+  }
+  .cal-cell:nth-child(7n) { border-right: none; }
+  .cal-cell.other-month { background: var(--paper); opacity: 0.5; }
+  .cal-cell.today { background: #fffbf4; }
+  .cal-cell.today .cal-date { color: var(--amber); font-weight: 700; }
+  .cal-cell.has-gigs { cursor: pointer; }
+  .cal-cell.has-gigs:hover { background: #fffdf7; }
+  .cal-date {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--muted);
+    margin-bottom: 0.3rem;
+    display: block;
+  }
+  .cal-gig-pill {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    background: var(--ink);
+    color: white;
+    border-radius: 2px;
+    padding: 0.2rem 0.4rem;
+    font-size: 0.62rem;
+    font-weight: 600;
+    margin-bottom: 0.2rem;
+    line-height: 1.2;
+    cursor: pointer;
+    transition: background 0.1s;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    max-width: 100%;
+  }
+  .cal-gig-pill:hover { background: var(--amber-dark); }
+  .cal-gig-pill.logged { background: var(--sage); }
+  .cal-gig-pill.logged:hover { background: #3a5432; }
+  .cal-gig-pill.going { background: var(--amber); color: var(--ink); }
+  .cal-gig-pill.going:hover { background: var(--amber-dark); color: white; }
+  .cal-gig-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+    flex-shrink: 0;
+    opacity: 0.7;
+  }
+  .cal-more {
+    font-size: 0.6rem;
+    color: var(--muted);
+    cursor: pointer;
+    padding: 0.1rem 0.3rem;
+  }
+  .cal-more:hover { color: var(--amber-dark); }
+
+  /* LEGEND */
+  .cal-legend {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 0.75rem 2rem;
+    max-width: 1100px;
+    margin: 0 auto;
+    font-size: 0.72rem;
+    color: var(--muted);
+  }
+  .legend-item { display: flex; align-items: center; gap: 0.4rem; }
+  .legend-dot {
+    width: 10px; height: 10px;
+    border-radius: 2px;
+  }
+
+  /* DAY DETAIL PANEL */
+  .cal-detail {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    margin: 0 2rem 1.5rem;
+    max-width: 1100px;
+    margin-left: auto; margin-right: auto;
+    overflow: hidden;
+    display: none;
+  }
+  .cal-detail.open { display: block; }
+  .cal-detail-head {
+    background: var(--ink);
+    padding: 0.8rem 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .cal-detail-head h3 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.1rem;
+    letter-spacing: 2px;
+    color: white;
+  }
+  .cal-detail-close {
+    color: #7a7060;
+    cursor: pointer;
+    font-size: 1rem;
+  }
+  .cal-detail-close:hover { color: white; }
+  .cal-detail-body { padding: 1rem 1.2rem; display: flex; flex-direction: column; gap: 0.7rem; }
+  .cal-event-row {
+    display: grid;
+    grid-template-columns: 44px 1fr auto;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.6rem 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .cal-event-row:last-child { border-bottom: none; }
+  .cal-event-thumb {
+    width: 44px; height: 58px;
+    border-radius: 2px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.45rem;
+    font-weight: 700;
+    color: rgba(255,255,255,0.7);
+    text-align: center;
+    line-height: 1.2;
+    flex-shrink: 0;
+  }
+  .cal-event-info .band-name { font-weight: 600; font-size: 0.9rem; }
+  .cal-event-info .venue-name { font-size: 0.75rem; color: var(--muted); }
+  .cal-event-info .event-meta { font-size: 0.72rem; color: var(--muted); margin-top: 0.2rem; }
+  .cal-event-actions { display: flex; gap: 0.4rem; align-items: center; }
+
+  /* WEEK VIEW */
+  .week-view { padding: 0 2rem 1.5rem; max-width: 1100px; margin: 0 auto; }
+  .week-grid {
+    display: grid;
+    grid-template-columns: 60px repeat(7, 1fr);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .week-day-head {
+    background: var(--ink);
+    color: #8a8070;
+    padding: 0.6rem 0.5rem;
+    text-align: center;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    border-right: 1px solid rgba(255,255,255,0.08);
+  }
+  .week-day-head.today-head { color: var(--amber); }
+  .week-time-col { background: var(--cream); }
+  .week-time-slot {
+    height: 50px;
+    border-bottom: 1px solid var(--border);
+    padding: 0.2rem 0.4rem;
+    font-size: 0.62rem;
+    color: var(--muted);
+    text-align: right;
+  }
+  .week-day-col {
+    background: var(--card);
+    border-right: 1px solid var(--border);
+    position: relative;
+    min-height: 400px;
+  }
+  .week-day-col:last-child { border-right: none; }
+  .week-event {
+    background: var(--ink);
+    color: white;
+    font-size: 0.65rem;
+    font-weight: 600;
+    padding: 0.3rem 0.4rem;
+    border-radius: 2px;
+    margin: 2px;
+    cursor: pointer;
+    line-height: 1.3;
+    border-left: 3px solid var(--amber);
+  }
+  .week-event.logged-ev { border-left-color: var(--sage); background: rgba(74,103,65,0.15); color: var(--sage); }
+  .week-event:hover { background: var(--amber-dark); border-left-color: var(--amber-dark); color: white; }
+
+  /* LIST VIEW */
+  .list-view { padding: 0 2rem 2rem; max-width: 1100px; margin: 0 auto; }
+  .list-view-day {
+    margin-bottom: 1.5rem;
+  }
+  .list-view-date {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 0.7rem;
+  }
+  .list-view-date-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.5rem;
+    line-height: 1;
+    color: var(--ink);
+    width: 48px;
+    text-align: center;
+  }
+  .list-view-date-info { }
+  .list-view-date-day { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); font-weight: 600; }
+  .list-view-date-month { font-size: 0.8rem; font-weight: 600; }
+  .list-view-events { display: flex; flex-direction: column; gap: 0.5rem; margin-left: 64px; }
+  .list-event-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--border);
+    border-radius: 3px;
+    padding: 0.7rem 1rem;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 1rem;
+    align-items: center;
+    cursor: pointer;
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+  .list-event-card:hover { border-left-color: var(--amber); box-shadow: 0 2px 8px rgba(0,0,0,0.07); }
+  .list-event-card.is-logged { border-left-color: var(--sage); }
+  .list-event-card.is-going { border-left-color: var(--amber); }
+  .list-event-band { font-weight: 600; font-size: 0.9rem; }
+  .list-event-venue { font-size: 0.78rem; color: var(--muted); }
+  .list-event-tags { display: flex; gap: 0.3rem; margin-top: 0.3rem; flex-wrap: wrap; }
+
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo" onclick="showPage('home')">GIG<span>R</span></div>
+  <a onclick="showPage('diary')" id="nav-diary">Diary</a>
+  <a onclick="showPage('discover')" id="nav-discover">Discover</a>
+  <a onclick="showPage('bands-dir')" id="nav-bands-dir">Bands</a>
+  <a onclick="showPage('lists')" id="nav-lists">Lists</a>
+  <a onclick="showPage('calendar')" id="nav-calendar">Calendar</a>
+  <a onclick="showPage('stats')" id="nav-stats">Stats ✦</a>
+  <div class="nav-right">
+    <a onclick="openModal()">+ Log Gig</a>
+    <a onclick="showPage('profile')" id="nav-profile">
+      <div class="nav-avatar">PB</div>
+    </a>
+  </div>
+</nav>
+
+<!-- ═══════════════════ HOME PAGE ═══════════════════ -->
+<div class="page active" id="page-home">
+  <div class="hero">
+    <div class="hero-label">Track. Review. Discover. Live music, logged.</div>
+    <h1>Track every<em>live moment.</em></h1>
+    <p class="hero-sub">Log gigs, write reviews, build lists, discover what your friends are watching live.</p>
+    <div class="hero-btns">
+      <button class="btn btn-amber" onclick="openModal()">Log a Gig</button>
+      <button class="btn btn-outline" onclick="showPage('discover')">Explore Bands</button>
+    </div>
+  </div>
+
+  <div class="stats-bar">
+    <span><b>4,821</b> Gigs Logged</span>
+    <span><b>891</b> Members</span>
+    <span><b>312</b> Venues Tracked</span>
+    <span><b>1,204</b> Bands</span>
+  </div>
+
+  <div class="container">
+    <div class="two-col">
+      <div>
+        <div class="section-head">
+          <h2>Friend Activity</h2>
+          <a onclick="showPage('diary')">See all →</a>
+        </div>
+        <div class="feed">
+
+          <div class="feed-item">
+            <div class="feed-poster">
+              <div class="feed-poster-img poster-b">YARD ACT</div>
+            </div>
+            <div class="feed-meta">
+              <div class="feed-user"><strong>Kate M.</strong> logged a gig · 2h ago</div>
+              <div class="feed-title">Yard Act</div>
+              <div class="feed-venue">Boiler Shop, Newcastle · 28 Feb 2025</div>
+              <div class="stars">★★★★½</div>
+              <div class="feed-review">"Absolutely electric. Adam Falkner had the whole room in the palm of his hand by the second song. The spoken word delivery on 'The Overload' gave me chills I wasn't prepared for."</div>
+              <div style="margin-top:0.5rem; display:flex; gap:0.4rem; flex-wrap:wrap;">
+                <span class="feed-tag">post-punk</span>
+                <span class="feed-tag">spoken word</span>
+                <span class="feed-tag">best of 2025</span>
+              </div>
+              <div class="feed-actions">
+                <span class="feed-action">♥ 14 likes</span>
+                <span class="feed-action">💬 3 comments</span>
+                <span class="feed-action">↗ share</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="feed-item">
+            <div class="feed-poster">
+              <div class="feed-poster-img poster-c">SHAME</div>
+            </div>
+            <div class="feed-meta">
+              <div class="feed-user"><strong>Tom K.</strong> added to list <em>"Best NE Gigs 2025"</em> · 5h ago</div>
+              <div class="feed-title">Shame</div>
+              <div class="feed-venue">Cluny, Newcastle · 15 Jan 2025</div>
+              <div class="stars">★★★★★</div>
+              <div class="feed-review">"One of those nights that reminds you why live music exists. Chaotic, sweaty, perfect. Front row for 'Tasteless' — my year can stop here."</div>
+              <div style="margin-top:0.5rem; display:flex; gap:0.4rem; flex-wrap:wrap;">
+                <span class="feed-tag">post-punk</span>
+                <span class="feed-tag">indie</span>
+                <span class="feed-tag">iconic</span>
+              </div>
+              <div class="feed-actions">
+                <span class="feed-action">♥ 31 likes</span>
+                <span class="feed-action">💬 7 comments</span>
+                <span class="feed-action">↗ share</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="feed-item">
+            <div class="feed-poster">
+              <div class="feed-poster-img poster-d">THE NIGHT CAFÉ</div>
+            </div>
+            <div class="feed-meta">
+              <div class="feed-user"><strong>Sarah G.</strong> logged a gig · 1d ago</div>
+              <div class="feed-title">The Night Café</div>
+              <div class="feed-venue">Think Tank?, Newcastle · 20 Feb 2025</div>
+              <div class="stars">★★★½</div>
+              <div class="feed-review">"Lovely set, bit short. The new songs didn't quite hit the heights of 'Get Away From The Feeling' but the crowd energy was incredible."</div>
+              <div style="margin-top:0.5rem; display:flex; gap:0.4rem; flex-wrap:wrap;">
+                <span class="feed-tag">indie-pop</span>
+                <span class="feed-tag">think tank</span>
+              </div>
+              <div class="feed-actions">
+                <span class="feed-action">♥ 8 likes</span>
+                <span class="feed-action">💬 1 comment</span>
+                <span class="feed-action">↗ share</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="feed-item">
+            <div class="feed-poster">
+              <div class="feed-poster-img poster-e">GOAT GIRL</div>
+            </div>
+            <div class="feed-meta">
+              <div class="feed-user"><strong>Jamie L.</strong> logged a gig · 2d ago</div>
+              <div class="feed-title">Goat Girl</div>
+              <div class="feed-venue">The Cluny 2, Newcastle · 18 Feb 2025</div>
+              <div class="stars">★★★★</div>
+              <div class="feed-review">"Hypnotic from start to finish. The way they build atmosphere is unlike any other band working right now. Tiny venue made it feel genuinely special."</div>
+              <div style="margin-top:0.5rem; display:flex; gap:0.4rem; flex-wrap:wrap;">
+                <span class="feed-tag">art-rock</span>
+                <span class="feed-tag">psychedelic</span>
+              </div>
+              <div class="feed-actions">
+                <span class="feed-action">♥ 19 likes</span>
+                <span class="feed-action">💬 5 comments</span>
+                <span class="feed-action">↗ share</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="sidebar">
+        <div class="sidebar-card">
+          <h3>🔥 Trending This Week</h3>
+          <div class="trending-list">
+            <div class="trending-item">
+              <div class="trending-rank">1</div>
+              <div class="trending-thumb poster-b" style="background:linear-gradient(135deg,#2d1b69,#11998e)">YA</div>
+              <div class="trending-info">
+                <div class="trending-name">Yard Act</div>
+                <div class="trending-meta">47 logs this week</div>
+              </div>
+            </div>
+            <div class="trending-item">
+              <div class="trending-rank">2</div>
+              <div class="trending-thumb" style="background:linear-gradient(135deg,#c0392b,#8e44ad)">SH</div>
+              <div class="trending-info">
+                <div class="trending-name">Shame</div>
+                <div class="trending-meta">39 logs this week</div>
+              </div>
+            </div>
+            <div class="trending-item">
+              <div class="trending-rank">3</div>
+              <div class="trending-thumb" style="background:linear-gradient(135deg,#e74c3c,#f39c12)">BI</div>
+              <div class="trending-info">
+                <div class="trending-name">Black Midi</div>
+                <div class="trending-meta">28 logs this week</div>
+              </div>
+            </div>
+            <div class="trending-item">
+              <div class="trending-rank">4</div>
+              <div class="trending-thumb" style="background:linear-gradient(135deg,#1abc9c,#2c3e50)">GG</div>
+              <div class="trending-info">
+                <div class="trending-name">Goat Girl</div>
+                <div class="trending-meta">24 logs this week</div>
+              </div>
+            </div>
+            <div class="trending-item">
+              <div class="trending-rank">5</div>
+              <div class="trending-thumb" style="background:linear-gradient(135deg,#27ae60,#1a1a1a)">WE</div>
+              <div class="trending-info">
+                <div class="trending-name">Wet Leg</div>
+                <div class="trending-meta">22 logs this week</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="sidebar-card">
+          <h3>🗓 Upcoming Near You</h3>
+          <div style="display:flex;flex-direction:column;gap:0.7rem;">
+            <div style="display:grid;grid-template-columns:36px 1fr;gap:0.6rem;align-items:start;">
+              <div style="text-align:center;">
+                <div style="font-family:'Bebas Neue',sans-serif;font-size:1.2rem;line-height:1;color:var(--amber)">08</div>
+                <div style="font-size:0.6rem;text-transform:uppercase;color:var(--muted)">Mar</div>
+              </div>
+              <div>
+                <div style="font-size:0.85rem;font-weight:600">Squid</div>
+                <div style="font-size:0.72rem;color:var(--muted)">Boiler Shop · £18</div>
+              </div>
+            </div>
+            <div style="display:grid;grid-template-columns:36px 1fr;gap:0.6rem;align-items:start;">
+              <div style="text-align:center;">
+                <div style="font-family:'Bebas Neue',sans-serif;font-size:1.2rem;line-height:1;color:var(--amber)">14</div>
+                <div style="font-size:0.6rem;text-transform:uppercase;color:var(--muted)">Mar</div>
+              </div>
+              <div>
+                <div style="font-size:0.85rem;font-weight:600">Dry Cleaning</div>
+                <div style="font-size:0.72rem;color:var(--muted)">Cluny 2 · £14</div>
+              </div>
+            </div>
+            <div style="display:grid;grid-template-columns:36px 1fr;gap:0.6rem;align-items:start;">
+              <div style="text-align:center;">
+                <div style="font-family:'Bebas Neue',sans-serif;font-size:1.2rem;line-height:1;color:var(--amber)">22</div>
+                <div style="font-size:0.6rem;text-transform:uppercase;color:var(--muted)">Mar</div>
+              </div>
+              <div>
+                <div style="font-size:0.85rem;font-weight:600">Fontaines D.C.</div>
+                <div style="font-size:0.72rem;color:var(--muted)">NX Newcastle · £28</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="sidebar-card">
+          <h3>👥 People to Follow</h3>
+          <div style="display:flex;flex-direction:column;gap:0.8rem;">
+            <div style="display:flex;align-items:center;gap:0.75rem;">
+              <div class="nav-avatar" style="background:#4a6741;color:white;width:34px;height:34px;font-size:0.7rem;">KM</div>
+              <div style="flex:1;">
+                <div style="font-size:0.85rem;font-weight:600;">Kate M.</div>
+                <div style="font-size:0.72rem;color:var(--muted)">212 gigs · Newcastle</div>
+              </div>
+              <button class="follow-btn" style="padding:0.3rem 0.8rem;font-size:0.68rem;">Follow</button>
+            </div>
+            <div style="display:flex;align-items:center;gap:0.75rem;">
+              <div class="nav-avatar" style="background:#2d1b69;color:white;width:34px;height:34px;font-size:0.7rem;">TK</div>
+              <div style="flex:1;">
+                <div style="font-size:0.85rem;font-weight:600;">Tom K.</div>
+                <div style="font-size:0.72rem;color:var(--muted)">88 gigs · Sunderland</div>
+              </div>
+              <button class="follow-btn following" style="padding:0.3rem 0.8rem;font-size:0.68rem;">Following</button>
+            </div>
+            <div style="display:flex;align-items:center;gap:0.75rem;">
+              <div class="nav-avatar" style="background:#c0392b;color:white;width:34px;height:34px;font-size:0.7rem;">SG</div>
+              <div style="flex:1;">
+                <div style="font-size:0.85rem;font-weight:600;">Sarah G.</div>
+                <div style="font-size:0.72rem;color:var(--muted)">341 gigs · Gateshead</div>
+              </div>
+              <button class="follow-btn" style="padding:0.3rem 0.8rem;font-size:0.68rem;">Follow</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════ PROFILE / DIARY PAGE ═══════════════════ -->
+<div class="page" id="page-profile">
+  <div class="profile-header">
+    <div class="profile-banner"></div>
+    <div class="profile-info">
+      <div class="profile-avatar">PB</div>
+      <div class="profile-details">
+        <div class="profile-name">Paul Beal</div>
+        <div class="profile-handle">@paulbrbeal · Newcastle upon Tyne</div>
+        <div class="profile-bio">Post-punk devotee. Grassroots gig evangelist. Probably at The Cluny.</div>
+      </div>
+      <div style="margin-left:auto;margin-bottom:0.3rem;display:flex;gap:0.75rem;align-items:center;">
+        <span class="pro-badge">✦ PRO</span>
+        <button class="follow-btn following">Following</button>
+      </div>
+    </div>
+    <div class="profile-stats">
+      <div class="pstat"><div class="pstat-num">147</div><div class="pstat-label">Gigs</div></div>
+      <div class="pstat"><div class="pstat-num">89</div><div class="pstat-label">Reviews</div></div>
+      <div class="pstat"><div class="pstat-num">14</div><div class="pstat-label">Lists</div></div>
+      <div class="pstat"><div class="pstat-num">63</div><div class="pstat-label">Following</div></div>
+      <div class="pstat"><div class="pstat-num">121</div><div class="pstat-label">Followers</div></div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="notice">
+      These are Paul's most recent diary entries. <strong>147 gigs</strong> logged since 2019.
+    </div>
+
+    <div style="display:flex;gap:0.5rem;margin-bottom:1.5rem;flex-wrap:wrap;">
+      <button class="filter-btn active">Diary</button>
+      <button class="filter-btn">Reviews</button>
+      <button class="filter-btn">Lists</button>
+      <button class="filter-btn">Watchlist</button>
+      <button class="filter-btn">Stats ✦</button>
+    </div>
+
+    <div class="diary-year-head">2025</div>
+
+    <div class="diary-month">
+      <div class="diary-month-label">February</div>
+      <div class="diary-entries">
+        <div class="diary-entry">
+          <div class="diary-day">28</div>
+          <div class="diary-entry-poster poster-b" style="border-radius:2px;display:flex;align-items:center;justify-content:center;font-size:0.5rem;font-weight:700;color:rgba(255,255,255,0.7);">YARD ACT</div>
+          <div class="diary-entry-info">
+            <div class="diary-entry-band">Yard Act</div>
+            <div class="diary-entry-venue">Boiler Shop, Newcastle</div>
+            <div class="diary-entry-stars">★★★★½</div>
+          </div>
+          <div class="diary-entry-actions">
+            <button class="icon-btn liked">♥</button>
+            <button class="icon-btn">✎</button>
+          </div>
+        </div>
+        <div class="diary-entry">
+          <div class="diary-day">14</div>
+          <div class="diary-entry-poster poster-e" style="border-radius:2px;display:flex;align-items:center;justify-content:center;font-size:0.5rem;font-weight:700;color:rgba(255,255,255,0.7);">GOAT GIRL</div>
+          <div class="diary-entry-info">
+            <div class="diary-entry-band">Goat Girl</div>
+            <div class="diary-entry-venue">The Cluny 2, Newcastle</div>
+            <div class="diary-entry-stars">★★★★</div>
+          </div>
+          <div class="diary-entry-actions">
+            <button class="icon-btn">♥</button>
+            <button class="icon-btn">✎</button>
+          </div>
+        </div>
+        <div class="diary-entry">
+          <div class="diary-day">01</div>
+          <div class="diary-entry-poster poster-f" style="border-radius:2px;display:flex;align-items:center;justify-content:center;font-size:0.5rem;font-weight:700;color:rgba(255,255,255,0.7);">SQUID</div>
+          <div class="diary-entry-info">
+            <div class="diary-entry-band">Squid</div>
+            <div class="diary-entry-venue">NX Newcastle</div>
+            <div class="diary-entry-stars">★★★★★</div>
+          </div>
+          <div class="diary-entry-actions">
+            <button class="icon-btn liked">♥</button>
+            <button class="icon-btn">✎</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="diary-month">
+      <div class="diary-month-label">January</div>
+      <div class="diary-entries">
+        <div class="diary-entry">
+          <div class="diary-day">15</div>
+          <div class="diary-entry-poster poster-c" style="border-radius:2px;display:flex;align-items:center;justify-content:center;font-size:0.5rem;font-weight:700;color:rgba(255,255,255,0.7);">SHAME</div>
+          <div class="diary-entry-info">
+            <div class="diary-entry-band">Shame</div>
+            <div class="diary-entry-venue">The Cluny, Newcastle</div>
+            <div class="diary-entry-stars">★★★★★</div>
+          </div>
+          <div class="diary-entry-actions">
+            <button class="icon-btn liked">♥</button>
+            <button class="icon-btn">✎</button>
+          </div>
+        </div>
+        <div class="diary-entry">
+          <div class="diary-day">04</div>
+          <div class="diary-entry-poster poster-d" style="border-radius:2px;display:flex;align-items:center;justify-content:center;font-size:0.5rem;font-weight:700;color:rgba(255,255,255,0.7);">WITCH FEVER</div>
+          <div class="diary-entry-info">
+            <div class="diary-entry-band">Witch Fever</div>
+            <div class="diary-entry-venue">Think Tank?, Newcastle</div>
+            <div class="diary-entry-stars">★★★★</div>
+          </div>
+          <div class="diary-entry-actions">
+            <button class="icon-btn">♥</button>
+            <button class="icon-btn">✎</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="diary-year-head">2024</div>
+    <div class="diary-month">
+      <div class="diary-month-label">December</div>
+      <div class="diary-entries">
+        <div class="diary-entry">
+          <div class="diary-day">20</div>
+          <div class="diary-entry-poster poster-a" style="border-radius:2px;display:flex;align-items:center;justify-content:center;font-size:0.5rem;font-weight:700;color:rgba(255,255,255,0.7);">FONTAINES D.C.</div>
+          <div class="diary-entry-info">
+            <div class="diary-entry-band">Fontaines D.C.</div>
+            <div class="diary-entry-venue">O2 City Hall, Newcastle</div>
+            <div class="diary-entry-stars">★★★★★</div>
+          </div>
+          <div class="diary-entry-actions">
+            <button class="icon-btn liked">♥</button>
+            <button class="icon-btn">✎</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════ DIARY PAGE (redirect to profile) ═══════════════════ -->
+<div class="page" id="page-diary">
+  <div style="padding:2rem;max-width:1100px;margin:0 auto;">
+    <div class="section-head"><h2>Your Gig Diary</h2><a onclick="openModal()">+ Log New Gig</a></div>
+    <p style="font-size:0.85rem;color:var(--muted);margin-bottom:1.5rem;">Your complete personal archive of every gig you've attended.</p>
+    <div style="display:flex;gap:0.5rem;margin-bottom:1.5rem;flex-wrap:wrap;">
+      <button class="filter-btn active">All Time</button>
+      <button class="filter-btn">2025</button>
+      <button class="filter-btn">2024</button>
+      <button class="filter-btn">By Venue</button>
+      <button class="filter-btn">By Genre</button>
+      <button class="filter-btn">Highest Rated</button>
+    </div>
+    <div class="two-col">
+      <div>
+        <div class="diary-year-head">2025</div>
+        <div class="diary-month">
+          <div class="diary-month-label">February · 3 gigs</div>
+          <div class="diary-entries">
+            <div class="diary-entry">
+              <div class="diary-day">28</div>
+              <div class="diary-entry-poster poster-b" style="border-radius:2px;display:flex;align-items:center;justify-content:center;font-size:0.5rem;font-weight:700;color:rgba(255,255,255,0.7);">YARD ACT</div>
+              <div class="diary-entry-info">
+                <div class="diary-entry-band">Yard Act</div>
+                <div class="diary-entry-venue">Boiler Shop, Newcastle</div>
+                <div class="diary-entry-stars">★★★★½</div>
+                <div style="font-size:0.72rem;color:var(--muted);margin-top:0.2rem;font-style:italic">"Electric. Adam Falkner had the whole room..."</div>
+              </div>
+              <div class="diary-entry-actions">
+                <button class="icon-btn liked">♥</button>
+                <button class="icon-btn">✎</button>
+              </div>
+            </div>
+            <div class="diary-entry">
+              <div class="diary-day">14</div>
+              <div class="diary-entry-poster poster-e" style="border-radius:2px;display:flex;align-items:center;justify-content:center;font-size:0.5rem;font-weight:700;color:rgba(255,255,255,0.7);">GOAT GIRL</div>
+              <div class="diary-entry-info">
+                <div class="diary-entry-band">Goat Girl</div>
+                <div class="diary-entry-venue">The Cluny 2, Newcastle</div>
+                <div class="diary-entry-stars">★★★★</div>
+              </div>
+              <div class="diary-entry-actions">
+                <button class="icon-btn">♥</button>
+                <button class="icon-btn">✎</button>
+              </div>
+            </div>
+            <div class="diary-entry">
+              <div class="diary-day">01</div>
+              <div class="diary-entry-poster poster-f" style="border-radius:2px;display:flex;align-items:center;justify-content:center;font-size:0.5rem;font-weight:700;color:rgba(255,255,255,0.7);">SQUID</div>
+              <div class="diary-entry-info">
+                <div class="diary-entry-band">Squid</div>
+                <div class="diary-entry-venue">NX Newcastle</div>
+                <div class="diary-entry-stars">★★★★★</div>
+              </div>
+              <div class="diary-entry-actions">
+                <button class="icon-btn liked">♥</button>
+                <button class="icon-btn">✎</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="diary-month">
+          <div class="diary-month-label">January · 2 gigs</div>
+          <div class="diary-entries">
+            <div class="diary-entry">
+              <div class="diary-day">15</div>
+              <div class="diary-entry-poster poster-c" style="border-radius:2px;display:flex;align-items:center;justify-content:center;font-size:0.5rem;font-weight:700;color:rgba(255,255,255,0.7);">SHAME</div>
+              <div class="diary-entry-info">
+                <div class="diary-entry-band">Shame</div>
+                <div class="diary-entry-venue">The Cluny, Newcastle</div>
+                <div class="diary-entry-stars">★★★★★</div>
+              </div>
+              <div class="diary-entry-actions">
+                <button class="icon-btn liked">♥</button>
+                <button class="icon-btn">✎</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="sidebar">
+        <div class="sidebar-card">
+          <h3>Your 2025 So Far</h3>
+          <div style="display:flex;gap:1.5rem;margin-bottom:1rem;">
+            <div class="pstat">
+              <div class="pstat-num" style="color:var(--ink);font-size:2rem;">12</div>
+              <div class="pstat-label">Gigs</div>
+            </div>
+            <div class="pstat">
+              <div class="pstat-num" style="color:var(--ink);font-size:2rem;">8</div>
+              <div class="pstat-label">Reviews</div>
+            </div>
+            <div class="pstat">
+              <div class="pstat-num" style="color:var(--ink);font-size:2rem;">4.1</div>
+              <div class="pstat-label">Avg Rating</div>
+            </div>
+          </div>
+          <div style="font-size:0.75rem;color:var(--muted);">Most visited: <strong style="color:var(--ink)">The Cluny</strong> (5 times)</div>
+        </div>
+        <div class="sidebar-card">
+          <h3>Ones to Watch</h3>
+          <div style="display:flex;flex-direction:column;gap:0.6rem;">
+            <div style="display:flex;align-items:center;gap:0.7rem;font-size:0.82rem;cursor:pointer;">
+              <span>👁</span><strong>English Teacher</strong><span style="color:var(--muted);margin-left:auto;font-size:0.72rem;">Leeds</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:0.7rem;font-size:0.82rem;cursor:pointer;">
+              <span>👁</span><strong>Bar Italia</strong><span style="color:var(--muted);margin-left:auto;font-size:0.72rem;">London</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:0.7rem;font-size:0.82rem;cursor:pointer;">
+              <span>👁</span><strong>Lambrini Girls</strong><span style="color:var(--muted);margin-left:auto;font-size:0.72rem;">Brighton</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════ DISCOVER PAGE ═══════════════════ -->
+<div class="page" id="page-discover">
+  <div class="container">
+    <div class="section-head"><h2>Discover Bands</h2></div>
+    <div class="discover-filters">
+      <button class="filter-btn active">All</button>
+      <button class="filter-btn">Post-Punk</button>
+      <button class="filter-btn">Indie Rock</button>
+      <button class="filter-btn">Electronic</button>
+      <button class="filter-btn">Folk</button>
+      <button class="filter-btn">Metal</button>
+      <button class="filter-btn">Jazz</button>
+      <button class="filter-btn">R&B</button>
+      <button class="filter-btn">⬆ Trending</button>
+      <button class="filter-btn">⭐ Top Rated</button>
+      <button class="filter-btn">🆕 New to GIGR</button>
+    </div>
+
+    <div class="band-grid">
+      <div class="band-card" onclick="showPage('band')">
+        <div class="band-card-art poster-b">YARD ACT</div>
+        <div class="band-card-info">
+          <div class="band-card-name">Yard Act</div>
+          <div class="band-card-genre">Post-Punk · Leeds</div>
+          <div class="band-card-rating">★★★★½ <span style="color:var(--muted)">· 312 logs</span></div>
+        </div>
+      </div>
+      <div class="band-card" onclick="showPage('band')">
+        <div class="band-card-art poster-c">SHAME</div>
+        <div class="band-card-info">
+          <div class="band-card-name">Shame</div>
+          <div class="band-card-genre">Post-Punk · London</div>
+          <div class="band-card-rating">★★★★★ <span style="color:var(--muted)">· 489 logs</span></div>
+        </div>
+      </div>
+      <div class="band-card" onclick="showPage('band')">
+        <div class="band-card-art poster-a">FONTAINES D.C.</div>
+        <div class="band-card-info">
+          <div class="band-card-name">Fontaines D.C.</div>
+          <div class="band-card-genre">Post-Punk · Dublin</div>
+          <div class="band-card-rating">★★★★★ <span style="color:var(--muted)">· 621 logs</span></div>
+        </div>
+      </div>
+      <div class="band-card" onclick="showPage('band')">
+        <div class="band-card-art poster-e">GOAT GIRL</div>
+        <div class="band-card-info">
+          <div class="band-card-name">Goat Girl</div>
+          <div class="band-card-genre">Art-Rock · London</div>
+          <div class="band-card-rating">★★★★ <span style="color:var(--muted)">· 178 logs</span></div>
+        </div>
+      </div>
+      <div class="band-card" onclick="showPage('band')">
+        <div class="band-card-art poster-f">SQUID</div>
+        <div class="band-card-info">
+          <div class="band-card-name">Squid</div>
+          <div class="band-card-genre">Post-Punk · Brighton</div>
+          <div class="band-card-rating">★★★★½ <span style="color:var(--muted)">· 241 logs</span></div>
+        </div>
+      </div>
+      <div class="band-card" onclick="showPage('band')">
+        <div class="band-card-art poster-d">BLACK MIDI</div>
+        <div class="band-card-info">
+          <div class="band-card-name">Black Midi</div>
+          <div class="band-card-genre">Experimental · London</div>
+          <div class="band-card-rating">★★★★ <span style="color:var(--muted)">· 196 logs</span></div>
+        </div>
+      </div>
+      <div class="band-card" onclick="showPage('band')">
+        <div class="band-card-art" style="background:linear-gradient(135deg,#27ae60,#1a1a1a)">WET LEG</div>
+        <div class="band-card-info">
+          <div class="band-card-name">Wet Leg</div>
+          <div class="band-card-genre">Indie Rock · Isle of Wight</div>
+          <div class="band-card-rating">★★★★½ <span style="color:var(--muted)">· 388 logs</span></div>
+        </div>
+      </div>
+      <div class="band-card" onclick="showPage('band')">
+        <div class="band-card-art" style="background:linear-gradient(135deg,#8e44ad,#2c3e50)">WITCH FEVER</div>
+        <div class="band-card-info">
+          <div class="band-card-name">Witch Fever</div>
+          <div class="band-card-genre">Noise-Rock · Manchester</div>
+          <div class="band-card-rating">★★★★ <span style="color:var(--muted)">· 134 logs</span></div>
+        </div>
+      </div>
+      <div class="band-card" onclick="showPage('band')">
+        <div class="band-card-art" style="background:linear-gradient(135deg,#d35400,#2c3e50)">ENGLISH TEACHER</div>
+        <div class="band-card-info">
+          <div class="band-card-name">English Teacher</div>
+          <div class="band-card-genre">Indie Rock · Leeds</div>
+          <div class="band-card-rating">★★★★★ <span style="color:var(--muted)">· 92 logs</span></div>
+        </div>
+      </div>
+      <div class="band-card" onclick="showPage('band')">
+        <div class="band-card-art" style="background:linear-gradient(135deg,#1a1a2e,#c0392b)">DRY CLEANING</div>
+        <div class="band-card-info">
+          <div class="band-card-name">Dry Cleaning</div>
+          <div class="band-card-genre">Post-Punk · London</div>
+          <div class="band-card-rating">★★★★ <span style="color:var(--muted)">· 167 logs</span></div>
+        </div>
+      </div>
+      <div class="band-card" onclick="showPage('band')">
+        <div class="band-card-art" style="background:linear-gradient(135deg,#11998e,#38ef7d)">BAR ITALIA</div>
+        <div class="band-card-info">
+          <div class="band-card-name">Bar Italia</div>
+          <div class="band-card-genre">Indie / Lo-fi · London</div>
+          <div class="band-card-rating">★★★★ <span style="color:var(--muted)">· 143 logs</span></div>
+        </div>
+      </div>
+      <div class="band-card" onclick="showPage('band')">
+        <div class="band-card-art" style="background:linear-gradient(135deg,#f953c6,#b91d73)">LAMBRINI GIRLS</div>
+        <div class="band-card-info">
+          <div class="band-card-name">Lambrini Girls</div>
+          <div class="band-card-genre">Punk · Brighton</div>
+          <div class="band-card-rating">★★★★½ <span style="color:var(--muted)">· 88 logs</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════ LISTS PAGE ═══════════════════ -->
+<div class="page" id="page-lists">
+  <div class="container">
+    <div class="section-head">
+      <h2>Lists</h2>
+      <a>+ Create List</a>
+    </div>
+    <div class="discover-filters">
+      <button class="filter-btn active">All Lists</button>
+      <button class="filter-btn">My Lists</button>
+      <button class="filter-btn">Following</button>
+      <button class="filter-btn">Popular</button>
+      <button class="filter-btn">Collaborative</button>
+      <button class="filter-btn">Ranked</button>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:1rem;">
+
+      <div class="list-card">
+        <div class="list-posters">
+          <div class="list-poster-mini poster-b">YA</div>
+          <div class="list-poster-mini poster-c">SH</div>
+          <div class="list-poster-mini poster-a">FD</div>
+          <div class="list-poster-mini poster-f">SQ</div>
+        </div>
+        <div class="list-info">
+          <div class="list-title">Best North East Gigs of 2025</div>
+          <div class="list-by">Curated by <strong>Kate M.</strong> · Ranked list</div>
+          <div class="list-desc">The standout nights from across the North East this year. Updated monthly — nominations welcome in the comments.</div>
+          <div class="list-footer">
+            <span class="list-count">28 BANDS</span>
+            <span class="feed-tag">ranked</span>
+            <span class="feed-tag">north east</span>
+            <span style="margin-left:auto;font-size:0.72rem;color:var(--muted)">♥ 94 likes</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="list-card">
+        <div class="list-posters">
+          <div class="list-poster-mini" style="background:linear-gradient(135deg,#2c3e50,#bdc3c7)">BS</div>
+          <div class="list-poster-mini" style="background:linear-gradient(135deg,#1a1a1a,#e74c3c)">BO</div>
+          <div class="list-poster-mini poster-e">GG</div>
+          <div class="list-poster-mini" style="background:linear-gradient(135deg,#16213e,#0f3460)">CT</div>
+        </div>
+        <div class="list-info">
+          <div class="list-title">Best Venues in the North East</div>
+          <div class="list-by">Curated by <strong>Paul B.</strong> · Collaborative</div>
+          <div class="list-desc">A love letter to the grassroots venues keeping live music alive. The Cluny, Boiler Shop, Think Tank? — add your favourites.</div>
+          <div class="list-footer">
+            <span class="list-count">12 VENUES</span>
+            <span class="feed-tag">venues</span>
+            <span class="feed-tag">collaborative</span>
+            <span style="margin-left:auto;font-size:0.72rem;color:var(--muted)">♥ 67 likes</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="list-card">
+        <div class="list-posters">
+          <div class="list-poster-mini" style="background:linear-gradient(135deg,#f953c6,#b91d73)">LG</div>
+          <div class="list-poster-mini" style="background:linear-gradient(135deg,#8e44ad,#2c3e50)">WF</div>
+          <div class="list-poster-mini" style="background:linear-gradient(135deg,#d35400,#2c3e50)">ET</div>
+          <div class="list-poster-mini" style="background:linear-gradient(135deg,#11998e,#38ef7d)">BI</div>
+        </div>
+        <div class="list-info">
+          <div class="list-title">Favourite Bands of Summer 2024</div>
+          <div class="list-by">Curated by <strong>Tom K.</strong> · Themed</div>
+          <div class="list-desc">The soundtrack to a summer of sweat, sun and standing in fields. Ranked by how hard I embarrassed myself dancing.</div>
+          <div class="list-footer">
+            <span class="list-count">16 BANDS</span>
+            <span class="feed-tag">summer</span>
+            <span class="feed-tag">themed</span>
+            <span style="margin-left:auto;font-size:0.72rem;color:var(--muted)">♥ 52 likes</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="list-card">
+        <div class="list-posters">
+          <div class="list-poster-mini poster-a">FD</div>
+          <div class="list-poster-mini poster-c">SH</div>
+          <div class="list-poster-mini poster-b">YA</div>
+          <div class="list-poster-mini poster-f">SQ</div>
+        </div>
+        <div class="list-info">
+          <div class="list-title">Post-Punk Revival: Essential Gigs 2020–2025</div>
+          <div class="list-by">Curated by <strong>Sarah G.</strong> · Ranked</div>
+          <div class="list-desc">A definitive chronicle of the UK post-punk explosion. If you haven't seen these bands live, reconsider your life choices.</div>
+          <div class="list-footer">
+            <span class="list-count">44 BANDS</span>
+            <span class="feed-tag">post-punk</span>
+            <span class="feed-tag">definitive</span>
+            <span style="margin-left:auto;font-size:0.72rem;color:var(--muted)">♥ 138 likes</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="list-card">
+        <div class="list-posters">
+          <div class="list-poster-mini" style="background:linear-gradient(135deg,#27ae60,#1a1a1a)">WL</div>
+          <div class="list-poster-mini" style="background:linear-gradient(135deg,#1a1a2e,#c0392b)">DC</div>
+          <div class="list-poster-mini" style="background:linear-gradient(135deg,#d35400,#2c3e50)">ET</div>
+          <div class="list-poster-mini poster-e">GG</div>
+        </div>
+        <div class="list-info">
+          <div class="list-title">Bands I'd Travel Anywhere to See Again</div>
+          <div class="list-by">Curated by <strong>Jamie L.</strong> · Personal</div>
+          <div class="list-desc">The shortlist of artists for whom no venue is too far, no ticket price too steep. My personal hall of fame.</div>
+          <div class="list-footer">
+            <span class="list-count">9 BANDS</span>
+            <span class="feed-tag">personal</span>
+            <span style="margin-left:auto;font-size:0.72rem;color:var(--muted)">♥ 41 likes</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════ BAND PAGE ═══════════════════ -->
+<div class="page" id="page-band">
+  <div class="band-header">
+    <div class="band-header-inner">
+      <div class="band-art poster-b">YARD ACT</div>
+      <div class="band-title">
+        <h1>Yard Act</h1>
+        <div class="origin">Leeds, UK · Est. 2019</div>
+        <div class="band-genres">
+          <span class="genre-pill">Post-Punk</span>
+          <span class="genre-pill">Spoken Word</span>
+          <span class="genre-pill">Art Rock</span>
+        </div>
+        <div class="band-actions">
+          <button class="btn btn-amber" onclick="openModal()">Log a Gig</button>
+          <button class="follow-btn">👁 Ones to Watch</button>
+          <button class="follow-btn">✓ Seen Live</button>
+        </div>
+      </div>
+    </div>
+    <div class="band-nav">
+      <a class="active">Overview</a>
+      <a>Reviews</a>
+      <a>Lists</a>
+      <a>Gig Posters</a>
+      <a>Similar Bands</a>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="band-stats-row">
+      <div class="band-stat">
+        <div class="band-stat-num">4.3</div>
+        <div class="band-stat-label">Avg Rating</div>
+      </div>
+      <div class="band-stat">
+        <div class="band-stat-num">312</div>
+        <div class="band-stat-label">Gigs Logged</div>
+      </div>
+      <div class="band-stat">
+        <div class="band-stat-num">84</div>
+        <div class="band-stat-label">Reviews</div>
+      </div>
+      <div class="band-stat">
+        <div class="band-stat-num">#7</div>
+        <div class="band-stat-label">NE Popularity</div>
+      </div>
+    </div>
+
+    <div class="two-col">
+      <div>
+        <div class="section-head"><h2>Recent Reviews</h2><a>See all 84 →</a></div>
+        <div class="feed">
+          <div class="feed-item">
+            <div class="feed-poster"><div class="feed-poster-img poster-b">YARD ACT</div></div>
+            <div class="feed-meta">
+              <div class="feed-user"><strong>Kate M.</strong> · Boiler Shop, Newcastle · 28 Feb 2025</div>
+              <div class="stars">★★★★½</div>
+              <div class="feed-review">"Absolutely electric. Adam Falkner had the whole room in the palm of his hand by the second song. The spoken word delivery on 'The Overload' gave me chills I wasn't prepared for. A band at the absolute top of their game."</div>
+              <div class="feed-actions"><span class="feed-action">♥ 14</span><span class="feed-action">💬 3</span></div>
+            </div>
+          </div>
+          <div class="feed-item">
+            <div class="feed-poster"><div class="feed-poster-img poster-b">YARD ACT</div></div>
+            <div class="feed-meta">
+              <div class="feed-user"><strong>Tom K.</strong> · NX Newcastle · 12 Nov 2024</div>
+              <div class="stars">★★★★</div>
+              <div class="feed-review">"Tighter than ever live. James Smith's deadpan delivery still hits differently in a venue. 'Payday' was a highlight — the crowd knew every word. Docked half a star because the sound mix was genuinely awful for the first three songs."</div>
+              <div class="feed-actions"><span class="feed-action">♥ 8</span><span class="feed-action">💬 1</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="section-head" style="margin-top:2rem;"><h2>Gig Posters</h2><a>Submit Poster →</a></div>
+        <div class="poster-grid">
+          <div class="poster-mini poster-b">Boiler Shop Feb '25</div>
+          <div class="poster-mini poster-a">NX Nov '24</div>
+          <div class="poster-mini" style="background:linear-gradient(135deg,#2d1b69,#e74c3c)">Cluny Mar '24</div>
+          <div class="poster-mini" style="background:linear-gradient(135deg,#1a1a1a,#27ae60)">Think Tank '23</div>
+          <div class="poster-mini" style="background:linear-gradient(135deg,#f39c12,#1a1a1a)">Cluny 2 '23</div>
+          <div class="poster-mini" style="background:linear-gradient(135deg,#8e44ad,#1a1a1a)">Boiler Shop '22</div>
+          <div class="poster-mini" style="background:linear-gradient(135deg,#16213e,#e74c3c)">Stack '22</div>
+          <div class="poster-mini" style="background:rgba(0,0,0,0.3);border:1px dashed var(--border);color:var(--muted)">+ Submit</div>
+        </div>
+      </div>
+
+      <div class="sidebar">
+        <div class="sidebar-card">
+          <h3>Rating Breakdown</h3>
+          <div style="text-align:center;margin-bottom:1rem;">
+            <div style="font-family:'Bebas Neue',sans-serif;font-size:3rem;line-height:1;">4.3</div>
+            <div style="color:var(--star);font-size:1.1rem;margin-bottom:0.2rem;">★★★★</div>
+            <div style="font-size:0.72rem;color:var(--muted)">312 ratings</div>
+          </div>
+          <div class="bar-chart">
+            <div class="bar-row">
+              <div class="rating-label">5★</div>
+              <div class="rating-track"><div class="rating-fill" style="width:55%">55%</div></div>
+            </div>
+            <div class="bar-row">
+              <div class="rating-label">4★</div>
+              <div class="rating-track"><div class="rating-fill" style="width:28%">28%</div></div>
+            </div>
+            <div class="bar-row">
+              <div class="rating-label">3★</div>
+              <div class="rating-track"><div class="rating-fill" style="width:12%">12%</div></div>
+            </div>
+            <div class="bar-row">
+              <div class="rating-label">2★</div>
+              <div class="rating-track"><div class="rating-fill" style="width:3%"></div></div>
+            </div>
+            <div class="bar-row">
+              <div class="rating-label">1★</div>
+              <div class="rating-track"><div class="rating-fill" style="width:2%"></div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="sidebar-card">
+          <h3>Community Tags</h3>
+          <div style="display:flex;flex-wrap:wrap;gap:0.4rem;">
+            <span class="feed-tag">post-punk <small>(189)</small></span>
+            <span class="feed-tag">spoken word <small>(142)</small></span>
+            <span class="feed-tag">energetic <small>(98)</small></span>
+            <span class="feed-tag">witty <small>(76)</small></span>
+            <span class="feed-tag">tight live <small>(64)</small></span>
+            <span class="feed-tag">must-see <small>(58)</small></span>
+          </div>
+        </div>
+
+        <div class="sidebar-card">
+          <h3>Similar Bands</h3>
+          <div class="trending-list">
+            <div class="trending-item">
+              <div class="trending-thumb poster-c">SH</div>
+              <div class="trending-info"><div class="trending-name">Shame</div><div class="trending-meta">Post-Punk</div></div>
+            </div>
+            <div class="trending-item">
+              <div class="trending-thumb poster-f">SQ</div>
+              <div class="trending-info"><div class="trending-name">Squid</div><div class="trending-meta">Post-Punk</div></div>
+            </div>
+            <div class="trending-item">
+              <div class="trending-thumb poster-a">FD</div>
+              <div class="trending-info"><div class="trending-name">Fontaines D.C.</div><div class="trending-meta">Post-Punk</div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="sidebar-card">
+          <h3>Fan Lists</h3>
+          <div style="display:flex;flex-direction:column;gap:0.5rem;">
+            <div style="font-size:0.82rem;cursor:pointer;"><a style="color:var(--ink);text-decoration:none;">Best NE Gigs 2025</a> <span style="color:var(--muted);font-size:0.72rem;">by Kate M.</span></div>
+            <div style="font-size:0.82rem;cursor:pointer;"><a style="color:var(--ink);text-decoration:none;">Post-Punk Essential Gigs</a> <span style="color:var(--muted);font-size:0.72rem;">by Sarah G.</span></div>
+            <div style="font-size:0.82rem;cursor:pointer;"><a style="color:var(--ink);text-decoration:none;">Bands I'd Travel For</a> <span style="color:var(--muted);font-size:0.72rem;">by Jamie L.</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════ LIST DETAIL PAGE ═══════════════════ -->
+<div class="page" id="page-list-detail">
+  <div class="list-detail-hero">
+    <div class="list-detail-inner">
+      <div class="list-detail-back" onclick="showPage('lists')">&#8592; Back to Lists</div>
+      <div class="list-detail-meta">
+        <div class="list-detail-mosaic">
+          <div class="list-detail-mosaic-item poster-b">YARD ACT</div>
+          <div class="list-detail-mosaic-item poster-c">SHAME</div>
+          <div class="list-detail-mosaic-item poster-a">FONTAINES</div>
+          <div class="list-detail-mosaic-item poster-f">SQUID</div>
+        </div>
+        <div class="list-detail-info">
+          <div class="list-detail-type">&#9654; Ranked List &middot; 28 entries</div>
+          <div class="list-detail-title">Best North East Gigs of 2025</div>
+          <div class="list-detail-byline">A list by <strong>Kate M.</strong> &middot; Updated March 2025</div>
+          <div class="list-detail-desc">The standout nights from across the North East this year. Every entry has been seen live — no hearsay, no hype. Updated monthly as the year unfolds. Nominations welcome in the comments.</div>
+          <div class="list-detail-actions">
+            <button class="btn btn-amber" style="font-size:0.78rem;padding:0.5rem 1.2rem;">&#9825; Like &nbsp;94</button>
+            <button class="follow-btn">&#128259; Share</button>
+            <button class="follow-btn">+ Add to My Lists</button>
+            <button class="follow-btn">&#128276; Follow updates</button>
+          </div>
+        </div>
+      </div>
+      <div class="list-detail-stats">
+        <div class="list-detail-stat"><b>28</b> bands</div>
+        <div class="list-detail-stat"><b>94</b> likes</div>
+        <div class="list-detail-stat"><b>312</b> views</div>
+        <div class="list-detail-stat"><b>18</b> comments</div>
+        <div class="list-detail-stat"><b>7</b> people saved this list</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ranked-list">
+
+    <!-- Sort / filter bar -->
+    <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:1.5rem;padding-bottom:1rem;border-bottom:2px solid var(--ink);">
+      <span style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--muted);">Sort by:</span>
+      <button class="filter-btn active" style="font-size:0.72rem;">Ranked Order</button>
+      <button class="filter-btn" style="font-size:0.72rem;">Date Added</button>
+      <button class="filter-btn" style="font-size:0.72rem;">Rating</button>
+      <button class="filter-btn" style="font-size:0.72rem;">Most Logged</button>
+      <span style="margin-left:auto;font-size:0.78rem;color:var(--muted);">Showing 1&ndash;10 of 28</span>
+    </div>
+
+    <!-- Entries -->
+    <div class="ranked-entry">
+      <div class="rank-number">1</div>
+      <div class="ranked-poster poster-c" onclick="showPage('band')">SHAME</div>
+      <div class="ranked-info">
+        <div class="ranked-band" onclick="showPage('band')">Shame</div>
+        <div class="ranked-venue">The Cluny, Newcastle &middot; 15 Jan 2025</div>
+        <div class="ranked-note">Chaotic, sweaty, perfect. One of those nights that reminds you why live music exists. Front row for Tasteless — my year can stop here. Every single person in that room knew they were witnessing something special.</div>
+        <div class="ranked-meta">
+          <span class="feed-tag">post-punk</span>
+          <span class="feed-tag">iconic</span>
+          <span class="feed-tag">sold out</span>
+        </div>
+      </div>
+      <div class="ranked-side">
+        <div class="ranked-rating">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <div class="ranked-log-count">489 GIGR entries</div>
+        <button class="icon-btn liked" style="width:32px;height:32px;">&#9829;</button>
+      </div>
+    </div>
+
+    <div class="ranked-entry">
+      <div class="rank-number">2</div>
+      <div class="ranked-poster poster-b" onclick="showPage('band')">YARD ACT</div>
+      <div class="ranked-info">
+        <div class="ranked-band" onclick="showPage('band')">Yard Act</div>
+        <div class="ranked-venue">Boiler Shop, Newcastle &middot; 28 Feb 2025</div>
+        <div class="ranked-note">Electric from the first chord. Adam Falkner had the whole room in the palm of his hand by the second song. The spoken word delivery on The Overload gave me chills I genuinely wasn't prepared for.</div>
+        <div class="ranked-meta">
+          <span class="feed-tag">post-punk</span>
+          <span class="feed-tag">spoken word</span>
+        </div>
+      </div>
+      <div class="ranked-side">
+        <div class="ranked-rating">&#9733;&#9733;&#9733;&#9733;&#9734;</div>
+        <div class="ranked-log-count">312 GIGR entries</div>
+        <button class="icon-btn" style="width:32px;height:32px;">&#9829;</button>
+      </div>
+    </div>
+
+    <div class="ranked-entry">
+      <div class="rank-number">3</div>
+      <div class="ranked-poster poster-f" onclick="showPage('band')">SQUID</div>
+      <div class="ranked-info">
+        <div class="ranked-band" onclick="showPage('band')">Squid</div>
+        <div class="ranked-venue">NX Newcastle &middot; 1 Feb 2025</div>
+        <div class="ranked-note">Unhinged in the best possible way. They've evolved so far beyond their debut — the new material hits harder live than on record. Ollie Judge looks like he might not survive to the end of each song, and it's wonderful.</div>
+        <div class="ranked-meta">
+          <span class="feed-tag">post-punk</span>
+          <span class="feed-tag">art-rock</span>
+        </div>
+      </div>
+      <div class="ranked-side">
+        <div class="ranked-rating">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <div class="ranked-log-count">241 GIGR entries</div>
+        <button class="icon-btn liked" style="width:32px;height:32px;">&#9829;</button>
+      </div>
+    </div>
+
+    <div class="ranked-entry">
+      <div class="rank-number">4</div>
+      <div class="ranked-poster poster-a" onclick="showPage('band')">FONTAINES D.C.</div>
+      <div class="ranked-info">
+        <div class="ranked-band" onclick="showPage('band')">Fontaines D.C.</div>
+        <div class="ranked-venue">O2 City Hall, Newcastle &middot; 20 Dec 2024</div>
+        <div class="ranked-note">Technically 2024 but carried so much energy into the new year it counts. Romance era Fontaines are a different beast — darker, louder, more cathartic. Jack Keane's guitar work was otherworldly.</div>
+        <div class="ranked-meta">
+          <span class="feed-tag">post-punk</span>
+          <span class="feed-tag">city hall</span>
+        </div>
+      </div>
+      <div class="ranked-side">
+        <div class="ranked-rating">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <div class="ranked-log-count">621 GIGR entries</div>
+        <button class="icon-btn" style="width:32px;height:32px;">&#9829;</button>
+      </div>
+    </div>
+
+    <div class="ranked-entry">
+      <div class="rank-number">5</div>
+      <div class="ranked-poster poster-e" onclick="showPage('band')">GOAT GIRL</div>
+      <div class="ranked-info">
+        <div class="ranked-band" onclick="showPage('band')">Goat Girl</div>
+        <div class="ranked-venue">The Cluny 2, Newcastle &middot; 14 Feb 2025</div>
+        <div class="ranked-note">Hypnotic, strange, and completely magnetic. The Cluny 2's intimacy made this feel genuinely once-in-a-lifetime. Their ability to build atmosphere is unlike any other band working right now.</div>
+        <div class="ranked-meta">
+          <span class="feed-tag">art-rock</span>
+          <span class="feed-tag">psychedelic</span>
+        </div>
+      </div>
+      <div class="ranked-side">
+        <div class="ranked-rating">&#9733;&#9733;&#9733;&#9733;&#9734;</div>
+        <div class="ranked-log-count">178 GIGR entries</div>
+        <button class="icon-btn" style="width:32px;height:32px;">&#9829;</button>
+      </div>
+    </div>
+
+    <div class="ranked-entry" style="opacity:0.6;">
+      <div class="rank-number">6</div>
+      <div class="ranked-poster" style="background:linear-gradient(135deg,#d35400,#2c3e50);width:70px;height:93px;border-radius:2px;display:flex;align-items:center;justify-content:center;font-size:0.5rem;font-weight:700;color:rgba(255,255,255,0.6);">ENGLISH TEACHER</div>
+      <div class="ranked-info">
+        <div class="ranked-band">English Teacher</div>
+        <div class="ranked-venue">Boiler Shop, Newcastle &middot; 22 Mar 2025</div>
+        <div class="ranked-note">Mercury Prize winners and it shows — a band utterly confident in their own weird, brilliant vision. Lily Fontaine commands a stage like someone twice her age.</div>
+        <div class="ranked-meta"><span class="feed-tag">indie</span><span class="feed-tag">art-rock</span></div>
+      </div>
+      <div class="ranked-side">
+        <div class="ranked-rating">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <div class="ranked-log-count">92 GIGR entries</div>
+        <button class="icon-btn" style="width:32px;height:32px;">&#9829;</button>
+      </div>
+    </div>
+
+    <!-- Load more -->
+    <div style="text-align:center;padding:2rem 0;">
+      <button class="btn btn-outline" style="border-color:var(--border);color:var(--muted);background:white;">Show entries 7&ndash;28</button>
+    </div>
+
+    <!-- Comments section -->
+    <div style="border-top:2px solid var(--ink);padding-top:1.5rem;margin-top:1rem;">
+      <div class="section-head" style="border:none;padding:0;margin-bottom:1rem;"><h2>18 Comments</h2></div>
+      <div style="display:flex;flex-direction:column;gap:1rem;">
+        <div style="display:grid;grid-template-columns:34px 1fr;gap:0.75rem;">
+          <div class="nav-avatar" style="background:#2d1b69;color:white;width:34px;height:34px;font-size:0.7rem;flex-shrink:0;">TK</div>
+          <div>
+            <div style="font-size:0.82rem;"><strong>Tom K.</strong> <span style="color:var(--muted);font-size:0.72rem;">2 days ago</span></div>
+            <div style="font-size:0.82rem;color:#3a3530;margin-top:0.2rem;line-height:1.55;">Shame at number 1 is absolutely correct. Genuinely thought about it for weeks after. Would put Goat Girl higher but can't argue with this list.</div>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:34px 1fr;gap:0.75rem;">
+          <div class="nav-avatar" style="background:#c0392b;color:white;width:34px;height:34px;font-size:0.7rem;flex-shrink:0;">SG</div>
+          <div>
+            <div style="font-size:0.82rem;"><strong>Sarah G.</strong> <span style="color:var(--muted);font-size:0.72rem;">4 days ago</span></div>
+            <div style="font-size:0.82rem;color:#3a3530;margin-top:0.2rem;line-height:1.55;">Where's Wet Leg?? Also the Fontaines entry technically being from 2024 is very Kate of you.</div>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top:1.2rem;display:grid;grid-template-columns:34px 1fr;gap:0.75rem;align-items:center;">
+        <div class="nav-avatar" style="width:34px;height:34px;font-size:0.7rem;">PB</div>
+        <input class="form-input" placeholder="Add a comment..." style="font-size:0.85rem;">
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════ BANDS DIRECTORY PAGE ═══════════════════ -->
+<div class="page" id="page-bands-dir">
+  <div class="bands-dir-hero">
+    <div class="bands-dir-inner">
+      <h1>Band Directory</h1>
+      <p>Every band logged on GIGR &mdash; browse, search, deep-dive. <span style="color:#5a5040;">1,204 bands and counting.</span></p>
+      <div class="bands-search-bar">
+        <input class="bands-search-input" placeholder="Search bands, genres, hometowns...">
+        <div style="display:flex;gap:0.5rem;">
+          <button class="filter-btn" style="border-color:rgba(255,255,255,0.2);color:#9a9080;background:transparent;font-size:0.72rem;">&#9650; Most Logged</button>
+          <button class="filter-btn" style="border-color:rgba(255,255,255,0.2);color:#9a9080;background:transparent;font-size:0.72rem;">&#9733; Top Rated</button>
+          <button class="filter-btn" style="border-color:rgba(255,255,255,0.2);color:#9a9080;background:transparent;font-size:0.72rem;">&#128293; Trending</button>
+          <button class="filter-btn" style="border-color:rgba(255,255,255,0.2);color:#9a9080;background:transparent;font-size:0.72rem;">&#128205; NE-based</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Genre filter pills -->
+  <div class="cal-filters" style="gap:0.4rem;">
+    <span class="cal-filters-label">Genre:</span>
+    <button class="filter-btn active">All</button>
+    <button class="filter-btn">Post-Punk</button>
+    <button class="filter-btn">Indie Rock</button>
+    <button class="filter-btn">Electronic</button>
+    <button class="filter-btn">Noise-Rock</button>
+    <button class="filter-btn">Folk</button>
+    <button class="filter-btn">Metal</button>
+    <button class="filter-btn">Jazz</button>
+    <button class="filter-btn">Hip-Hop</button>
+    <button class="filter-btn">R&amp;B</button>
+  </div>
+
+  <!-- Alpha bar -->
+  <div class="alpha-bar">
+    <div style="font-size:0.68rem;font-weight:700;letter-spacing:0.1em;color:var(--muted);margin-right:0.5rem;line-height:28px;">A–Z:</div>
+    <button class="alpha-btn has-bands active">A</button>
+    <button class="alpha-btn has-bands">B</button>
+    <button class="alpha-btn has-bands">C</button>
+    <button class="alpha-btn has-bands">D</button>
+    <button class="alpha-btn has-bands">E</button>
+    <button class="alpha-btn has-bands">F</button>
+    <button class="alpha-btn has-bands">G</button>
+    <button class="alpha-btn has-bands">H</button>
+    <button class="alpha-btn">I</button>
+    <button class="alpha-btn has-bands">J</button>
+    <button class="alpha-btn">K</button>
+    <button class="alpha-btn has-bands">L</button>
+    <button class="alpha-btn has-bands">M</button>
+    <button class="alpha-btn has-bands">N</button>
+    <button class="alpha-btn">O</button>
+    <button class="alpha-btn has-bands">P</button>
+    <button class="alpha-btn">Q</button>
+    <button class="alpha-btn has-bands">R</button>
+    <button class="alpha-btn has-bands">S</button>
+    <button class="alpha-btn has-bands">T</button>
+    <button class="alpha-btn">U</button>
+    <button class="alpha-btn">V</button>
+    <button class="alpha-btn has-bands">W</button>
+    <button class="alpha-btn">X</button>
+    <button class="alpha-btn has-bands">Y</button>
+    <button class="alpha-btn">Z</button>
+    <button class="alpha-btn has-bands">#</button>
+  </div>
+
+  <div class="bands-dir-body">
+
+    <!-- Featured / Trending section -->
+    <div style="margin-top:1.5rem;">
+      <div class="section-head"><h2>&#128293; Trending This Week</h2></div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0.75rem;margin-bottom:2rem;">
+        <div class="bands-featured" onclick="showPage('band')">
+          <div class="bands-featured-art poster-b">YARD ACT</div>
+          <div class="bands-featured-info">
+            <div class="bands-featured-label">&#9650; #1 This Week</div>
+            <div class="bands-featured-name">Yard Act</div>
+            <div class="bands-featured-desc">Post-punk Leeds outfit. 47 logs this week. Boiler Shop sold out Feb.</div>
+          </div>
+        </div>
+        <div class="bands-featured" onclick="showPage('band')">
+          <div class="bands-featured-art poster-c">SHAME</div>
+          <div class="bands-featured-info">
+            <div class="bands-featured-label">&#9650; #2 This Week</div>
+            <div class="bands-featured-name">Shame</div>
+            <div class="bands-featured-desc">South London post-punk. 39 logs this week. 5-star consensus from 14 reviews.</div>
+          </div>
+        </div>
+        <div class="bands-featured" onclick="showPage('band')">
+          <div class="bands-featured-art poster-f">SQUID</div>
+          <div class="bands-featured-info">
+            <div class="bands-featured-label">&#9650; #3 This Week</div>
+            <div class="bands-featured-name">Squid</div>
+            <div class="bands-featured-desc">Brighton art-punk. NX Newcastle confirmed March. 28 logs this week.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Alphabetical directory — A section -->
+    <div class="bands-dir-section">
+      <div class="bands-dir-letter">A</div>
+      <div class="bands-dir-grid">
+        <div class="bands-dir-item" onclick="showPage('band')">
+          <div class="bands-dir-thumb" style="background:linear-gradient(135deg,#1a1a2e,#c0392b)">AF</div>
+          <div>
+            <div class="bands-dir-name">Adult Fiction</div>
+            <div class="bands-dir-sub">Post-Punk &middot; Leeds</div>
+            <div class="bands-dir-rating">&#9733;&#9733;&#9733;&#9733; &middot; 34 logs</div>
+          </div>
+        </div>
+        <div class="bands-dir-item" onclick="showPage('band')">
+          <div class="bands-dir-thumb" style="background:linear-gradient(135deg,#11998e,#38ef7d)">BI</div>
+          <div>
+            <div class="bands-dir-name">Bar Italia</div>
+            <div class="bands-dir-sub">Indie / Lo-fi &middot; London</div>
+            <div class="bands-dir-rating">&#9733;&#9733;&#9733;&#9733; &middot; 143 logs</div>
+          </div>
+        </div>
+        <div class="bands-dir-item" onclick="showPage('band')">
+          <div class="bands-dir-thumb" style="background:linear-gradient(135deg,#2c3e50,#e74c3c)">BM</div>
+          <div>
+            <div class="bands-dir-name">Black Midi</div>
+            <div class="bands-dir-sub">Experimental &middot; London</div>
+            <div class="bands-dir-rating">&#9733;&#9733;&#9733;&#9733; &middot; 196 logs</div>
+          </div>
+        </div>
+        <div class="bands-dir-item" onclick="showPage('band')">
+          <div class="bands-dir-thumb" style="background:linear-gradient(135deg,#8e44ad,#1a5276)">BC</div>
+          <div>
+            <div class="bands-dir-name">Brooke Combe</div>
+            <div class="bands-dir-sub">Soul / Jazz &middot; Edinburgh</div>
+            <div class="bands-dir-rating">&#9733;&#9733;&#9733;&#9733;½ &middot; 58 logs</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- D section -->
+    <div class="bands-dir-section">
+      <div class="bands-dir-letter">D</div>
+      <div class="bands-dir-grid">
+        <div class="bands-dir-item" onclick="showPage('band')">
+          <div class="bands-dir-thumb" style="background:linear-gradient(135deg,#1a1a2e,#c0392b)">DC</div>
+          <div>
+            <div class="bands-dir-name">Dry Cleaning</div>
+            <div class="bands-dir-sub">Post-Punk &middot; London</div>
+            <div class="bands-dir-rating">&#9733;&#9733;&#9733;&#9733; &middot; 167 logs</div>
+          </div>
+        </div>
+        <div class="bands-dir-item" onclick="showPage('band')">
+          <div class="bands-dir-thumb" style="background:linear-gradient(135deg,#f39c12,#e74c3c)">DT</div>
+          <div>
+            <div class="bands-dir-name">Dead Tooth</div>
+            <div class="bands-dir-sub">Punk &middot; Newcastle</div>
+            <div class="bands-dir-rating">&#9733;&#9733;&#9733;&#9733; &middot; 28 logs</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- E section -->
+    <div class="bands-dir-section">
+      <div class="bands-dir-letter">E</div>
+      <div class="bands-dir-grid">
+        <div class="bands-dir-item" onclick="showPage('band')">
+          <div class="bands-dir-thumb" style="background:linear-gradient(135deg,#d35400,#2c3e50)">ET</div>
+          <div>
+            <div class="bands-dir-name">English Teacher</div>
+            <div class="bands-dir-sub">Indie Rock &middot; Leeds</div>
+            <div class="bands-dir-rating">&#9733;&#9733;&#9733;&#9733;&#9733; &middot; 92 logs</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- F section -->
+    <div class="bands-dir-section">
+      <div class="bands-dir-letter">F</div>
+      <div class="bands-dir-grid">
+        <div class="bands-dir-item" onclick="showPage('band')">
+          <div class="bands-dir-thumb poster-a">FD</div>
+          <div>
+            <div class="bands-dir-name">Fontaines D.C.</div>
+            <div class="bands-dir-sub">Post-Punk &middot; Dublin</div>
+            <div class="bands-dir-rating">&#9733;&#9733;&#9733;&#9733;&#9733; &middot; 621 logs</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- G section -->
+    <div class="bands-dir-section">
+      <div class="bands-dir-letter">G</div>
+      <div class="bands-dir-grid">
+        <div class="bands-dir-item" onclick="showPage('band')">
+          <div class="bands-dir-thumb poster-e">GG</div>
+          <div>
+            <div class="bands-dir-name">Goat Girl</div>
+            <div class="bands-dir-sub">Art-Rock &middot; London</div>
+            <div class="bands-dir-rating">&#9733;&#9733;&#9733;&#9733; &middot; 178 logs</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- L section -->
+    <div class="bands-dir-section">
+      <div class="bands-dir-letter">L</div>
+      <div class="bands-dir-grid">
+        <div class="bands-dir-item" onclick="showPage('band')">
+          <div class="bands-dir-thumb" style="background:linear-gradient(135deg,#f953c6,#b91d73)">LG</div>
+          <div>
+            <div class="bands-dir-name">Lambrini Girls</div>
+            <div class="bands-dir-sub">Punk &middot; Brighton</div>
+            <div class="bands-dir-rating">&#9733;&#9733;&#9733;&#9733;½ &middot; 88 logs</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- S section -->
+    <div class="bands-dir-section">
+      <div class="bands-dir-letter">S</div>
+      <div class="bands-dir-grid">
+        <div class="bands-dir-item" onclick="showPage('band')">
+          <div class="bands-dir-thumb poster-c">SH</div>
+          <div>
+            <div class="bands-dir-name">Shame</div>
+            <div class="bands-dir-sub">Post-Punk &middot; London</div>
+            <div class="bands-dir-rating">&#9733;&#9733;&#9733;&#9733;&#9733; &middot; 489 logs</div>
+          </div>
+        </div>
+        <div class="bands-dir-item" onclick="showPage('band')">
+          <div class="bands-dir-thumb poster-f">SQ</div>
+          <div>
+            <div class="bands-dir-name">Squid</div>
+            <div class="bands-dir-sub">Post-Punk &middot; Brighton</div>
+            <div class="bands-dir-rating">&#9733;&#9733;&#9733;&#9733;½ &middot; 241 logs</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- W section -->
+    <div class="bands-dir-section">
+      <div class="bands-dir-letter">W</div>
+      <div class="bands-dir-grid">
+        <div class="bands-dir-item" onclick="showPage('band')">
+          <div class="bands-dir-thumb" style="background:linear-gradient(135deg,#27ae60,#1a1a1a)">WL</div>
+          <div>
+            <div class="bands-dir-name">Wet Leg</div>
+            <div class="bands-dir-sub">Indie Rock &middot; Isle of Wight</div>
+            <div class="bands-dir-rating">&#9733;&#9733;&#9733;&#9733;½ &middot; 388 logs</div>
+          </div>
+        </div>
+        <div class="bands-dir-item" onclick="showPage('band')">
+          <div class="bands-dir-thumb" style="background:linear-gradient(135deg,#8e44ad,#2c3e50)">WF</div>
+          <div>
+            <div class="bands-dir-name">Witch Fever</div>
+            <div class="bands-dir-sub">Noise-Rock &middot; Manchester</div>
+            <div class="bands-dir-rating">&#9733;&#9733;&#9733;&#9733; &middot; 134 logs</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Y section -->
+    <div class="bands-dir-section">
+      <div class="bands-dir-letter">Y</div>
+      <div class="bands-dir-grid">
+        <div class="bands-dir-item" onclick="showPage('band')">
+          <div class="bands-dir-thumb poster-b">YA</div>
+          <div>
+            <div class="bands-dir-name">Yard Act</div>
+            <div class="bands-dir-sub">Post-Punk &middot; Leeds</div>
+            <div class="bands-dir-rating">&#9733;&#9733;&#9733;&#9733;½ &middot; 312 logs</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="text-align:center;padding:2.5rem 0 1rem;">
+      <button class="btn btn-outline" style="border-color:var(--border);color:var(--muted);background:white;">Load more bands (1,180 remaining)</button>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════ CALENDAR PAGE ═══════════════════ -->
+<div class="page" id="page-calendar">
+
+  <!-- Header: month nav + view toggle -->
+  <div class="cal-header">
+    <button class="cal-nav-btn" onclick="calShift(-1)">&#8249;</button>
+    <div class="cal-month-title" id="calTitle">MARCH <span>2025</span></div>
+    <button class="cal-nav-btn" onclick="calShift(1)">&#8250;</button>
+    <div class="cal-view-toggle">
+      <button class="cal-view-btn active" onclick="setCalView('month',this)">Month</button>
+      <button class="cal-view-btn" onclick="setCalView('week',this)">Week</button>
+      <button class="cal-view-btn" onclick="setCalView('list',this)">List</button>
+    </div>
+  </div>
+
+  <!-- Filter bar -->
+  <div class="cal-filters">
+    <span class="cal-filters-label">Filter:</span>
+    <button class="filter-btn active">All Gigs</button>
+    <button class="filter-btn">I'm Going</button>
+    <button class="filter-btn">Logged</button>
+    <button class="filter-btn">Friends Going</button>
+    <span style="margin-left:auto;display:flex;gap:0.5rem;align-items:center;">
+      <button class="filter-btn">Post-Punk</button>
+      <button class="filter-btn">Indie</button>
+      <button class="filter-btn">Electronic</button>
+      <span style="font-size:0.75rem;color:var(--muted);margin-left:0.5rem;cursor:pointer;text-decoration:underline;">More genres &#9660;</span>
+    </span>
+  </div>
+
+  <!-- Legend -->
+  <div class="cal-legend">
+    <div class="legend-item"><div class="legend-dot" style="background:var(--ink)"></div> Upcoming</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--amber)"></div> I'm Going</div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--sage)"></div> Logged (attended)</div>
+    <div style="margin-left:auto;">
+      <button class="btn btn-amber" onclick="openModal()" style="font-size:0.72rem;padding:0.4rem 1rem;">+ Log a Gig</button>
+    </div>
+  </div>
+
+  <!-- Month view -->
+  <div id="calMonthView">
+    <div class="cal-grid-wrap">
+      <div class="cal-grid" id="calGrid">
+        <div class="cal-day-header">Mon</div>
+        <div class="cal-day-header">Tue</div>
+        <div class="cal-day-header">Wed</div>
+        <div class="cal-day-header">Thu</div>
+        <div class="cal-day-header">Fri</div>
+        <div class="cal-day-header">Sat</div>
+        <div class="cal-day-header">Sun</div>
+      </div>
+    </div>
+    <div class="cal-detail" id="calDetail">
+      <div class="cal-detail-head">
+        <h3 id="calDetailTitle">Gigs on this day</h3>
+        <span class="cal-detail-close" onclick="document.getElementById('calDetail').classList.remove('open')">&#10005;</span>
+      </div>
+      <div class="cal-detail-body" id="calDetailBody"></div>
+    </div>
+  </div>
+
+  <!-- Week view -->
+  <div id="calWeekView" style="display:none;">
+    <div class="week-view">
+      <div class="week-grid">
+        <div class="week-day-head" style="background:var(--ink);"></div>
+        <div class="week-day-head">Mon 3</div>
+        <div class="week-day-head">Tue 4</div>
+        <div class="week-day-head today-head">Wed 5</div>
+        <div class="week-day-head">Thu 6</div>
+        <div class="week-day-head">Fri 7</div>
+        <div class="week-day-head">Sat 8</div>
+        <div class="week-day-head">Sun 9</div>
+        <div class="week-time-col">
+          <div class="week-time-slot">18:00</div>
+          <div class="week-time-slot">19:00</div>
+          <div class="week-time-slot">20:00</div>
+          <div class="week-time-slot">21:00</div>
+          <div class="week-time-slot">22:00</div>
+          <div class="week-time-slot">23:00</div>
+        </div>
+        <div class="week-day-col"></div>
+        <div class="week-day-col"></div>
+        <div class="week-day-col" style="background:#fffbf4;">
+          <div class="week-event" style="margin-top:55px;">Dry Cleaning<br><span style="font-weight:400;opacity:0.7">Cluny 2 · 19:30</span></div>
+        </div>
+        <div class="week-day-col"></div>
+        <div class="week-day-col">
+          <div class="week-event" style="margin-top:5px;">Fontaines D.C.<br><span style="font-weight:400;opacity:0.7">NX · 20:00</span></div>
+        </div>
+        <div class="week-day-col">
+          <div class="week-event" style="margin-top:55px;border-left-color:var(--amber);">Squid<br><span style="font-weight:400;opacity:0.8">Boiler Shop · 19:00</span></div>
+          <div class="week-event" style="margin-top:4px;">Lambrini Girls<br><span style="font-weight:400;opacity:0.7">Think Tank? · 21:00</span></div>
+        </div>
+        <div class="week-day-col">
+          <div class="week-event logged-ev" style="margin-top:5px;">Yard Act &#10003;<br><span style="font-weight:400;">Boiler Shop · 20:00</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- List view -->
+  <div id="calListView" style="display:none;">
+    <div class="list-view">
+      <div class="list-view-day">
+        <div class="list-view-date">
+          <div class="list-view-date-num">05</div>
+          <div class="list-view-date-info">
+            <div class="list-view-date-day">Wednesday</div>
+            <div class="list-view-date-month">March 2025</div>
+          </div>
+        </div>
+        <div class="list-view-events">
+          <div class="list-event-card is-going">
+            <div>
+              <div class="list-event-band">Dry Cleaning</div>
+              <div class="list-event-venue">The Cluny 2, Newcastle &middot; Doors 19:00 &middot; &pound;14</div>
+              <div class="list-event-tags"><span class="feed-tag">post-punk</span><span class="feed-tag">indie</span></div>
+            </div>
+            <div style="text-align:right;">
+              <span class="feed-tag" style="background:var(--amber);color:var(--ink);border-color:var(--amber);font-weight:700;">Going &#10003;</span>
+              <div style="font-size:0.72rem;color:var(--muted);margin-top:0.4rem;">3 friends going</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="list-view-day">
+        <div class="list-view-date">
+          <div class="list-view-date-num">07</div>
+          <div class="list-view-date-info">
+            <div class="list-view-date-day">Friday</div>
+            <div class="list-view-date-month">March 2025</div>
+          </div>
+        </div>
+        <div class="list-view-events">
+          <div class="list-event-card">
+            <div>
+              <div class="list-event-band">Fontaines D.C.</div>
+              <div class="list-event-venue">NX Newcastle &middot; Doors 19:30 &middot; &pound;28</div>
+              <div class="list-event-tags"><span class="feed-tag">post-punk</span><span class="feed-tag">irish</span></div>
+            </div>
+            <div style="text-align:right;">
+              <span class="feed-tag" style="cursor:pointer;">+ Going</span>
+              <div style="font-size:0.72rem;color:var(--muted);margin-top:0.4rem;">7 friends going</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="list-view-day">
+        <div class="list-view-date">
+          <div class="list-view-date-num">08</div>
+          <div class="list-view-date-info">
+            <div class="list-view-date-day">Saturday</div>
+            <div class="list-view-date-month">March 2025</div>
+          </div>
+        </div>
+        <div class="list-view-events">
+          <div class="list-event-card is-going">
+            <div>
+              <div class="list-event-band">Squid</div>
+              <div class="list-event-venue">Boiler Shop, Newcastle &middot; Doors 19:00 &middot; &pound;18</div>
+              <div class="list-event-tags"><span class="feed-tag">post-punk</span><span class="feed-tag">art-rock</span></div>
+            </div>
+            <div style="text-align:right;">
+              <span class="feed-tag" style="background:var(--amber);color:var(--ink);border-color:var(--amber);font-weight:700;">Going &#10003;</span>
+              <div style="font-size:0.72rem;color:var(--muted);margin-top:0.4rem;">5 friends going</div>
+            </div>
+          </div>
+          <div class="list-event-card">
+            <div>
+              <div class="list-event-band">Lambrini Girls</div>
+              <div class="list-event-venue">Think Tank?, Newcastle &middot; Doors 20:00 &middot; &pound;12</div>
+              <div class="list-event-tags"><span class="feed-tag">punk</span><span class="feed-tag">unsigned</span></div>
+            </div>
+            <div style="text-align:right;">
+              <span class="feed-tag" style="cursor:pointer;">+ Going</span>
+              <div style="font-size:0.72rem;color:var(--muted);margin-top:0.4rem;">2 friends going</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="list-view-day">
+        <div class="list-view-date">
+          <div class="list-view-date-num">14</div>
+          <div class="list-view-date-info">
+            <div class="list-view-date-day">Friday</div>
+            <div class="list-view-date-month">March 2025</div>
+          </div>
+        </div>
+        <div class="list-view-events">
+          <div class="list-event-card">
+            <div>
+              <div class="list-event-band">Goat Girl</div>
+              <div class="list-event-venue">The Cluny, Newcastle &middot; Doors 19:30 &middot; &pound;16</div>
+              <div class="list-event-tags"><span class="feed-tag">art-rock</span><span class="feed-tag">psychedelic</span></div>
+            </div>
+            <div style="text-align:right;">
+              <span class="feed-tag" style="cursor:pointer;">+ Going</span>
+              <div style="font-size:0.72rem;color:var(--muted);margin-top:0.4rem;">1 friend going</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="list-view-day">
+        <div class="list-view-date">
+          <div class="list-view-date-num">22</div>
+          <div class="list-view-date-info">
+            <div class="list-view-date-day">Saturday</div>
+            <div class="list-view-date-month">March 2025</div>
+          </div>
+        </div>
+        <div class="list-view-events">
+          <div class="list-event-card">
+            <div>
+              <div class="list-event-band">English Teacher</div>
+              <div class="list-event-venue">Boiler Shop, Newcastle &middot; Doors 19:00 &middot; &pound;16</div>
+              <div class="list-event-tags"><span class="feed-tag">indie</span><span class="feed-tag">art-rock</span></div>
+            </div>
+            <div style="text-align:right;">
+              <span class="feed-tag" style="cursor:pointer;">+ Going</span>
+              <div style="font-size:0.72rem;color:var(--muted);margin-top:0.4rem;">4 friends going</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══════════════════ STATS PAGE ═══════════════════ -->
+<div class="page" id="page-stats">
+  <div class="container">
+    <div style="display:flex;align-items:center;gap:1rem;margin-bottom:1.5rem;">
+      <div>
+        <h2 style="font-family:'Bebas Neue',sans-serif;font-size:2rem;letter-spacing:3px;">Your GIGR Stats</h2>
+        <p style="font-size:0.82rem;color:var(--muted);">All-time analytics for Paul B.</p>
+      </div>
+      <span class="pro-badge" style="margin-left:auto;">✦ PRO Feature</span>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-big">147</div>
+        <div class="stat-card-label">Total Gigs</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-big">89</div>
+        <div class="stat-card-label">Reviews Written</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-big">4.1</div>
+        <div class="stat-card-label">Average Rating</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-big">72</div>
+        <div class="stat-card-label">Unique Bands</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-big">18</div>
+        <div class="stat-card-label">Unique Venues</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-big">£1,840</div>
+        <div class="stat-card-label">Est. Spent on Gigs</div>
+      </div>
+    </div>
+
+    <div class="two-col">
+      <div>
+        <div class="section-head"><h2>Gigs Per Year</h2></div>
+        <div class="bar-chart" style="margin-bottom:2rem;">
+          <div class="bar-row">
+            <div class="bar-label">2025</div>
+            <div class="bar-track"><div class="bar-fill" style="width:16%">12</div></div>
+          </div>
+          <div class="bar-row">
+            <div class="bar-label">2024</div>
+            <div class="bar-track"><div class="bar-fill" style="width:53%">41</div></div>
+          </div>
+          <div class="bar-row">
+            <div class="bar-label">2023</div>
+            <div class="bar-track"><div class="bar-fill" style="width:47%">36</div></div>
+          </div>
+          <div class="bar-row">
+            <div class="bar-label">2022</div>
+            <div class="bar-track"><div class="bar-fill" style="width:32%">25</div></div>
+          </div>
+          <div class="bar-row">
+            <div class="bar-label">2021</div>
+            <div class="bar-track"><div class="bar-fill" style="width:17%">13</div></div>
+          </div>
+          <div class="bar-row">
+            <div class="bar-label">2020</div>
+            <div class="bar-track"><div class="bar-fill" style="width:5%">4</div></div>
+          </div>
+          <div class="bar-row">
+            <div class="bar-label">2019</div>
+            <div class="bar-track"><div class="bar-fill" style="width:21%">16</div></div>
+          </div>
+        </div>
+
+        <div class="section-head"><h2>Top Genres</h2></div>
+        <div class="bar-chart" style="margin-bottom:2rem;">
+          <div class="bar-row">
+            <div class="bar-label">Post-Punk</div>
+            <div class="bar-track"><div class="bar-fill" style="width:72%">72%</div></div>
+          </div>
+          <div class="bar-row">
+            <div class="bar-label">Indie Rock</div>
+            <div class="bar-track"><div class="bar-fill" style="width:45%">45%</div></div>
+          </div>
+          <div class="bar-row">
+            <div class="bar-label">Noise-Rock</div>
+            <div class="bar-track"><div class="bar-fill" style="width:23%">23%</div></div>
+          </div>
+          <div class="bar-row">
+            <div class="bar-label">Electronic</div>
+            <div class="bar-track"><div class="bar-fill" style="width:14%">14%</div></div>
+          </div>
+          <div class="bar-row">
+            <div class="bar-label">Folk</div>
+            <div class="bar-track"><div class="bar-fill" style="width:8%">8%</div></div>
+          </div>
+        </div>
+
+        <div class="section-head"><h2>Most Visited Venues</h2></div>
+        <div class="bar-chart">
+          <div class="bar-row">
+            <div class="bar-label">The Cluny</div>
+            <div class="bar-track"><div class="bar-fill" style="width:65%">42 visits</div></div>
+          </div>
+          <div class="bar-row">
+            <div class="bar-label">Think Tank?</div>
+            <div class="bar-track"><div class="bar-fill" style="width:42%">27 visits</div></div>
+          </div>
+          <div class="bar-row">
+            <div class="bar-label">Boiler Shop</div>
+            <div class="bar-track"><div class="bar-fill" style="width:30%">19 visits</div></div>
+          </div>
+          <div class="bar-row">
+            <div class="bar-label">NX Newcastle</div>
+            <div class="bar-track"><div class="bar-fill" style="width:22%">14 visits</div></div>
+          </div>
+          <div class="bar-row">
+            <div class="bar-label">Sage Gateshead</div>
+            <div class="bar-track"><div class="bar-fill" style="width:14%">9 visits</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sidebar">
+        <div class="sidebar-card">
+          <h3>Most Seen Bands</h3>
+          <div class="trending-list">
+            <div class="trending-item">
+              <div class="trending-rank">1</div>
+              <div class="trending-thumb poster-c">SH</div>
+              <div class="trending-info"><div class="trending-name">Shame</div><div class="trending-meta">9 times</div></div>
+            </div>
+            <div class="trending-item">
+              <div class="trending-rank">2</div>
+              <div class="trending-thumb poster-f">SQ</div>
+              <div class="trending-info"><div class="trending-name">Squid</div><div class="trending-meta">7 times</div></div>
+            </div>
+            <div class="trending-item">
+              <div class="trending-rank">3</div>
+              <div class="trending-thumb poster-b">YA</div>
+              <div class="trending-info"><div class="trending-name">Yard Act</div><div class="trending-meta">6 times</div></div>
+            </div>
+            <div class="trending-item">
+              <div class="trending-rank">4</div>
+              <div class="trending-thumb poster-a">FD</div>
+              <div class="trending-info"><div class="trending-name">Fontaines D.C.</div><div class="trending-meta">5 times</div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="sidebar-card">
+          <h3>Decade Breakdown</h3>
+          <div class="bar-chart">
+            <div class="bar-row">
+              <div class="bar-label">2020s</div>
+              <div class="bar-track"><div class="bar-fill" style="width:80%">80%</div></div>
+            </div>
+            <div class="bar-row">
+              <div class="bar-label">2010s</div>
+              <div class="bar-track"><div class="bar-fill" style="width:18%">18%</div></div>
+            </div>
+            <div class="bar-row">
+              <div class="bar-label">2000s</div>
+              <div class="bar-track"><div class="bar-fill" style="width:2%">2%</div></div>
+            </div>
+          </div>
+          <p style="font-size:0.72rem;color:var(--muted);margin-top:0.8rem;">Based on when each band formed/peaked.</p>
+        </div>
+
+        <div class="sidebar-card">
+          <h3>Your Gig Personality</h3>
+          <div style="text-align:center;padding:0.5rem 0;">
+            <div style="font-family:'DM Serif Display',serif;font-size:1.3rem;font-style:italic;margin-bottom:0.5rem;">"The Post-Punk<br>Evangelist"</div>
+            <div style="font-size:0.78rem;color:var(--muted);line-height:1.6;">You attend 3.2× more post-punk gigs than the average GIGR user. You favour intimate venues and rarely miss a Cluny show.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════ LOG GIG MODAL ═══════════════════ -->
+<div class="modal-overlay" id="modal">
+  <div class="modal">
+    <div class="modal-head">
+      <h2>Log a Gig</h2>
+      <span class="modal-close" onclick="closeModal()">✕</span>
+    </div>
+    <div class="modal-body">
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Artist / Band</label>
+          <input type="text" class="form-input" placeholder="e.g. Yard Act">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Date Attended</label>
+          <input type="date" class="form-input">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Venue</label>
+          <input type="text" class="form-input" placeholder="e.g. The Cluny, Newcastle">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Ticket Price</label>
+          <input type="text" class="form-input" placeholder="e.g. £18">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Your Rating</label>
+        <div class="star-picker" id="starPicker">
+          <span class="star-pick" data-v="1" onclick="setStar(1)">★</span>
+          <span class="star-pick" data-v="2" onclick="setStar(2)">★</span>
+          <span class="star-pick" data-v="3" onclick="setStar(3)">★</span>
+          <span class="star-pick" data-v="4" onclick="setStar(4)">★</span>
+          <span class="star-pick" data-v="5" onclick="setStar(5)">★</span>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Review <span style="font-weight:400;color:#bbb">(optional)</span></label>
+        <textarea class="form-textarea" placeholder="What made tonight special? Was it the setlist, the crowd, the room? Tell it like you're texting a friend who couldn't make it..."></textarea>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Tags</label>
+        <div class="checkbox-group">
+          <label class="check-opt"><input type="checkbox"> post-punk</label>
+          <label class="check-opt checked"><input type="checkbox" checked> must-see</label>
+          <label class="check-opt"><input type="checkbox"> intimate venue</label>
+          <label class="check-opt"><input type="checkbox"> festival</label>
+          <label class="check-opt"><input type="checkbox"> support act</label>
+          <label class="check-opt"><input type="checkbox"> first time seeing</label>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Mark as</label>
+        <div class="checkbox-group">
+          <label class="check-opt checked"><input type="checkbox" checked> 👁 Would See Again</label>
+          <label class="check-opt"><input type="checkbox"> 🚫 Would Avoid</label>
+          <label class="check-opt"><input type="checkbox"> ⭐ Ones to Watch</label>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Gig Poster <span style="font-weight:400;color:#bbb">(optional)</span></label>
+        <div style="border:2px dashed var(--border);border-radius:3px;padding:1.5rem;text-align:center;cursor:pointer;font-size:0.82rem;color:var(--muted);">
+          📎 Upload your gig poster or ticket stub
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-ghost" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-amber" onclick="closeModal()">Save to Diary</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  function showPage(id) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.getElementById('page-' + id).classList.add('active');
+    document.querySelectorAll('nav a').forEach(a => a.classList.remove('active'));
+    const navEl = document.getElementById('nav-' + id);
+    if (navEl) navEl.classList.add('active');
+    window.scrollTo(0, 0);
+  }
+
+  function openModal() {
+    document.getElementById('modal').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeModal() {
+    document.getElementById('modal').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  document.getElementById('modal').addEventListener('click', function(e) {
+    if (e.target === this) closeModal();
+  });
+
+  function setStar(n) {
+    const stars = document.querySelectorAll('.star-pick');
+    stars.forEach((s, i) => {
+      s.style.color = i < n ? 'var(--star)' : 'var(--border)';
+    });
+  }
+
+  document.querySelectorAll('.check-opt').forEach(el => {
+    el.addEventListener('click', function() {
+      this.classList.toggle('checked');
+    });
+  });
+
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+      this.closest('.discover-filters, div').querySelectorAll('.filter-btn')
+        .forEach(b => b.classList.remove('active'));
+      this.classList.add('active');
+    });
+  });
+
+  document.querySelectorAll('.follow-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+      this.classList.toggle('following');
+      this.textContent = this.classList.contains('following') ? 'Following' : 'Follow';
+    });
+  });
+
+  document.querySelectorAll('.icon-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+      this.classList.toggle('liked');
+    });
+  });
+
+  // ═══ CALENDAR JS ═══
+  const MONTHS = ['JANUARY','FEBRUARY','MARCH','APRIL','MAY','JUNE',
+                  'JULY','AUGUST','SEPTEMBER','OCTOBER','NOVEMBER','DECEMBER'];
+
+  // Gig data keyed by "YYYY-M-D"
+  const gigData = {
+    '2025-3-5':  [{ band:'Dry Cleaning',    venue:"Cluny 2",       price:'£14', type:'going',   genres:['post-punk','indie']     },],
+    '2025-3-7':  [{ band:'Fontaines D.C.',  venue:"NX Newcastle",  price:'£28', type:'upcoming', genres:['post-punk']            },],
+    '2025-3-8':  [{ band:'Squid',           venue:"Boiler Shop",   price:'£18', type:'going',   genres:['post-punk','art-rock']  },
+                  { band:'Lambrini Girls',  venue:"Think Tank?",   price:'£12', type:'upcoming', genres:['punk']                 },],
+    '2025-3-14': [{ band:'Goat Girl',       venue:"The Cluny",     price:'£16', type:'upcoming', genres:['art-rock']             },],
+    '2025-3-15': [{ band:'Witch Fever',     venue:"Think Tank?",   price:'£10', type:'upcoming', genres:['noise-rock']           },],
+    '2025-3-20': [{ band:'Bar Italia',      venue:"Cluny 2",       price:'£14', type:'upcoming', genres:['indie']                },],
+    '2025-3-22': [{ band:'English Teacher', venue:"Boiler Shop",   price:'£16', type:'upcoming', genres:['indie','art-rock']     },],
+    '2025-3-26': [{ band:'Yard Act',        venue:"Boiler Shop",   price:'£18', type:'logged',  genres:['post-punk']             },],
+    '2025-3-28': [{ band:'Shame',           venue:"The Cluny",     price:'£16', type:'logged',  genres:['post-punk']             },
+                  { band:'black midi',      venue:"NX Newcastle",  price:'£20', type:'upcoming', genres:['experimental']         },],
+    '2025-2-28': [{ band:'Yard Act',        venue:"Boiler Shop",   price:'£18', type:'logged',  genres:['post-punk']             },],
+    '2025-4-3':  [{ band:'Squid',           venue:"NX Newcastle",  price:'£20', type:'upcoming', genres:['post-punk']            },],
+  };
+
+  const POSTER_CLASSES = ['poster-a','poster-b','poster-c','poster-d','poster-e','poster-f'];
+  function posterClass(band) {
+    let h = 0; for (let c of band) h = (h*31 + c.charCodeAt(0)) & 0xffff;
+    return POSTER_CLASSES[h % POSTER_CLASSES.length];
+  }
+
+  let calYear = 2025, calMonth = 2; // 0-indexed month (2 = March)
+
+  function buildMonthGrid() {
+    document.getElementById('calTitle').innerHTML =
+      MONTHS[calMonth] + ' <span>' + calYear + '</span>';
+    const grid = document.getElementById('calGrid');
+    // Remove all cells (keep 7 headers)
+    while (grid.children.length > 7) grid.removeChild(grid.lastChild);
+
+    const firstDay = new Date(calYear, calMonth, 1).getDay(); // 0=Sun
+    const daysInMonth = new Date(calYear, calMonth + 1, 0).getDate();
+    const daysInPrev  = new Date(calYear, calMonth, 0).getDate();
+    // Monday-start offset
+    const startOffset = (firstDay === 0 ? 6 : firstDay - 1);
+
+    const today = new Date();
+
+    // Prev month fillers
+    for (let i = startOffset - 1; i >= 0; i--) {
+      const cell = document.createElement('div');
+      cell.className = 'cal-cell other-month';
+      cell.innerHTML = '<span class="cal-date">' + (daysInPrev - i) + '</span>';
+      grid.appendChild(cell);
+    }
+
+    // Current month days
+    for (let d = 1; d <= daysInMonth; d++) {
+      const key = calYear + '-' + (calMonth+1) + '-' + d;
+      const gigs = gigData[key] || [];
+      const cell = document.createElement('div');
+      const isToday = (today.getFullYear()===calYear && today.getMonth()===calMonth && today.getDate()===d);
+      cell.className = 'cal-cell' + (isToday?' today':'') + (gigs.length?' has-gigs':'');
+      let html = '<span class="cal-date">' + d + '</span>';
+      gigs.slice(0,2).forEach(g => {
+        html += '<div class="cal-gig-pill ' + g.type + '" title="' + g.band + ' @ ' + g.venue + '">'
+              + '<span class="cal-gig-dot"></span>' + g.band + '</div>';
+      });
+      if (gigs.length > 2) html += '<div class="cal-more">+' + (gigs.length-2) + ' more</div>';
+      cell.innerHTML = html;
+      if (gigs.length) {
+        cell.addEventListener('click', () => showDayDetail(d, key, gigs));
+      }
+      grid.appendChild(cell);
+    }
+
+    // Next month fillers
+    const totalCells = startOffset + daysInMonth;
+    const remainder = totalCells % 7 === 0 ? 0 : 7 - (totalCells % 7);
+    for (let i = 1; i <= remainder; i++) {
+      const cell = document.createElement('div');
+      cell.className = 'cal-cell other-month';
+      cell.innerHTML = '<span class="cal-date">' + i + '</span>';
+      grid.appendChild(cell);
+    }
+  }
+
+  function showDayDetail(day, key, gigs) {
+    const dayNames = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+    const d = new Date(calYear, calMonth, day);
+    document.getElementById('calDetailTitle').textContent =
+      dayNames[d.getDay()] + ', ' + day + ' ' + MONTHS[calMonth].charAt(0) + MONTHS[calMonth].slice(1).toLowerCase() + ' ' + calYear;
+
+    let html = '';
+    gigs.forEach(g => {
+      const pc = posterClass(g.band);
+      const badge = g.type === 'logged'
+        ? '<span class="feed-tag" style="background:var(--sage);color:white;border-color:var(--sage)">Logged ✓</span>'
+        : g.type === 'going'
+        ? '<span class="feed-tag" style="background:var(--amber);color:var(--ink);border-color:var(--amber);font-weight:700">Going ✓</span>'
+        : '<span class="feed-tag" style="cursor:pointer">+ Going</span>';
+      html += `<div class="cal-event-row">
+        <div class="cal-event-thumb ${pc}">${g.band}</div>
+        <div class="cal-event-info">
+          <div class="band-name">${g.band}</div>
+          <div class="venue-name">${g.venue}</div>
+          <div class="event-meta">${g.price} &middot; ${g.genres.map(t=>'<span class="feed-tag">'+t+'</span>').join('')}</div>
+        </div>
+        <div class="cal-event-actions">${badge}</div>
+      </div>`;
+    });
+    document.getElementById('calDetailBody').innerHTML = html;
+    document.getElementById('calDetail').classList.add('open');
+  }
+
+  function calShift(dir) {
+    calMonth += dir;
+    if (calMonth > 11) { calMonth = 0; calYear++; }
+    if (calMonth < 0)  { calMonth = 11; calYear--; }
+    buildMonthGrid();
+    document.getElementById('calDetail').classList.remove('open');
+  }
+
+  function setCalView(view, btn) {
+    document.querySelectorAll('.cal-view-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('calMonthView').style.display = view==='month' ? '' : 'none';
+    document.getElementById('calWeekView').style.display  = view==='week'  ? '' : 'none';
+    document.getElementById('calListView').style.display  = view==='list'  ? '' : 'none';
+  }
+
+  // Build calendar when nav triggers it
+  document.getElementById('nav-calendar').addEventListener('click', buildMonthGrid);
+
+  // Wire list cards to list-detail page
+  document.querySelectorAll('#page-lists .list-card').forEach(card => {
+    card.addEventListener('click', () => showPage('list-detail'));
+  });
+
+  // Alpha bar interaction on bands directory
+  document.querySelectorAll('.alpha-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+      document.querySelectorAll('.alpha-btn').forEach(b => b.classList.remove('active'));
+      this.classList.add('active');
+    });
+  });
+</script>
+<!-- ═══════════════════ FOOTER ═══════════════════ -->
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-top">
+
+      <!-- Brand col -->
+      <div>
+        <div class="footer-brand-logo">GIG<span>R</span></div>
+        <div class="footer-brand-tagline">Track every live moment. Log gigs, write reviews, build lists, discover what your friends are watching.</div>
+        <div class="footer-badge">&#10022; Beta</div>
+        <div class="footer-social">
+          <a class="footer-social-btn" title="Instagram">&#9824;</a>
+          <a class="footer-social-btn" title="Twitter / X">𝕏</a>
+          <a class="footer-social-btn" title="Bluesky">&#9729;</a>
+          <a class="footer-social-btn" title="TikTok">&#9654;</a>
+        </div>
+      </div>
+
+      <!-- Explore col -->
+      <div>
+        <div class="footer-col-head">Explore</div>
+        <div class="footer-links">
+          <a onclick="showPage('discover')">Discover Bands</a>
+          <a onclick="showPage('bands-dir')">Band Directory</a>
+          <a onclick="showPage('lists')">Community Lists</a>
+          <a onclick="showPage('calendar')">Gig Calendar</a>
+          <a>Venues</a>
+          <a>Genres</a>
+        </div>
+      </div>
+
+      <!-- Account col -->
+      <div>
+        <div class="footer-col-head">Account</div>
+        <div class="footer-links">
+          <a onclick="showPage('diary')">My Diary</a>
+          <a onclick="showPage('profile')">My Profile</a>
+          <a onclick="showPage('stats')">My Stats &#10022; Pro</a>
+          <a>Settings</a>
+          <a>Import Gig History</a>
+          <a>Export Data</a>
+        </div>
+      </div>
+
+      <!-- Company col -->
+      <div>
+        <div class="footer-col-head">GIGR</div>
+        <div class="footer-links">
+          <a>About</a>
+          <a>Blog</a>
+          <a>Pro Membership</a>
+          <a>For Venues</a>
+          <a>API</a>
+          <a>Submit a Gig</a>
+          <a>Contact</a>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="footer-bottom">
+      <div class="footer-bottom-left">
+        &copy; 2025 <strong>GIGR</strong> &mdash; Built with love for grassroots music.
+        Currently tracking <strong>1,204 bands</strong> across <strong>312 venues</strong>.
+      </div>
+      <div class="footer-bottom-right">
+        <a>Privacy Policy</a>
+        <a>Terms of Service</a>
+        <a>Cookie Settings</a>
+        <a>Accessibility</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
