@@ -871,6 +871,12 @@
   /* RESPONSIVE */
   @media (max-width: 720px) {
 
+    .search-trigger { min-width: unset; padding: 0.3rem 0.5rem; }
+    .search-trigger span { font-size: 0.9rem; }
+    .search-trigger kbd, .search-trigger span + span { display: none; }
+    .search-overlay { padding-top: 60px; }
+    .search-box { margin: 0 0.75rem; }
+
     /* ── NAV ── */
     nav {
       padding: 0 1rem;
@@ -1408,6 +1414,154 @@
   }
   .bands-featured-desc { font-size: 0.78rem; color: #7a7060; line-height: 1.5; }
 
+  /* ═══ SEARCH ═══ */
+  .search-trigger {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 3px;
+    padding: 0.3rem 0.75rem;
+    color: #8a8070;
+    font-size: 0.78rem;
+    cursor: pointer;
+    transition: all 0.15s;
+    white-space: nowrap;
+    font-family: 'DM Sans', sans-serif;
+    min-width: 140px;
+  }
+  .search-trigger:hover { border-color: rgba(255,255,255,0.25); color: #c0b8a8; }
+  .search-trigger kbd {
+    margin-left: auto;
+    font-size: 0.62rem;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 2px;
+    padding: 0.1rem 0.35rem;
+    font-family: 'DM Sans', sans-serif;
+    color: #6a6050;
+  }
+  .search-overlay {
+    position: fixed; inset: 0;
+    background: rgba(15,14,13,0.85);
+    z-index: 300;
+    display: none;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 80px;
+    backdrop-filter: blur(4px);
+  }
+  .search-overlay.open { display: flex; }
+  .search-box {
+    background: var(--card);
+    border-radius: 4px;
+    width: 100%;
+    max-width: 600px;
+    margin: 0 1rem;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+  }
+  .search-input-row {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.9rem 1.2rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .search-icon { font-size: 1rem; color: var(--muted); flex-shrink: 0; }
+  .search-input-main {
+    flex: 1;
+    border: none;
+    outline: none;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1rem;
+    color: var(--ink);
+    background: transparent;
+  }
+  .search-input-main::placeholder { color: var(--muted); }
+  .search-close-btn {
+    font-size: 0.75rem;
+    color: var(--muted);
+    cursor: pointer;
+    background: var(--cream);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    padding: 0.2rem 0.5rem;
+    font-family: 'DM Sans', sans-serif;
+    transition: all 0.15s;
+    flex-shrink: 0;
+  }
+  .search-close-btn:hover { background: var(--ink); color: white; border-color: var(--ink); }
+  .search-results { max-height: 420px; overflow-y: auto; }
+  .search-section-label {
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--muted);
+    padding: 0.75rem 1.2rem 0.3rem;
+  }
+  .search-result-item {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    padding: 0.6rem 1.2rem;
+    cursor: pointer;
+    transition: background 0.1s;
+  }
+  .search-result-item:hover { background: var(--cream); }
+  .search-result-thumb {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.55rem; font-weight: 700;
+    color: rgba(255,255,255,0.7);
+    text-align: center; line-height: 1.2;
+    flex-shrink: 0;
+  }
+  .search-result-thumb.rect {
+    border-radius: 2px;
+    width: 30px; height: 40px;
+  }
+  .search-result-name { font-weight: 600; font-size: 0.88rem; line-height: 1.2; }
+  .search-result-sub { font-size: 0.72rem; color: var(--muted); }
+  .search-result-type {
+    margin-left: auto;
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    background: var(--cream);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    padding: 0.1rem 0.4rem;
+    flex-shrink: 0;
+  }
+  .search-empty {
+    padding: 2rem 1.2rem;
+    text-align: center;
+    color: var(--muted);
+    font-size: 0.85rem;
+  }
+  .search-footer {
+    padding: 0.6rem 1.2rem;
+    border-top: 1px solid var(--border);
+    display: flex;
+    gap: 1.5rem;
+    font-size: 0.68rem;
+    color: var(--muted);
+  }
+  .search-footer span { display: flex; align-items: center; gap: 0.3rem; }
+  .search-footer kbd {
+    background: var(--cream);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    padding: 0.1rem 0.35rem;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.65rem;
+  }
+
   /* ═══ FOOTER ═══ */
   .site-footer {
     background: var(--ink);
@@ -1846,12 +2000,14 @@
 <nav>
   <div class="nav-logo" onclick="showPage('home')">GIG<span>R</span></div>
   <a onclick="showPage('diary')" id="nav-diary">Diary</a>
-  <a onclick="showPage('discover')" id="nav-discover">Discover</a>
   <a onclick="showPage('bands-dir')" id="nav-bands-dir">Bands</a>
   <a onclick="showPage('lists')" id="nav-lists">Lists</a>
   <a onclick="showPage('calendar')" id="nav-calendar">Calendar</a>
   <a onclick="showPage('stats')" id="nav-stats">Stats ✦</a>
   <div class="nav-right">
+    <button class="search-trigger" onclick="openSearch()">
+      <span>&#128269;</span> Search&hellip; <kbd>⌘K</kbd>
+    </button>
     <a onclick="openModal()">+ Log Gig</a>
     <a onclick="showPage('profile')" id="nav-profile">
       <div class="nav-avatar">PB</div>
@@ -1869,7 +2025,7 @@
     <p class="hero-sub">Log gigs, write reviews, build lists, discover what your friends are watching live.</p>
     <div class="hero-btns">
       <button class="btn btn-amber" onclick="openModal()">Log a Gig</button>
-      <button class="btn btn-outline" onclick="showPage('discover')">Explore Bands</button>
+      <button class="btn btn-outline" onclick="showPage('bands-dir')">Explore Bands</button>
     </div>
   </div>
 
@@ -2129,7 +2285,7 @@
       These are Paul's most recent diary entries. <strong>147 gigs</strong> logged since 2019.
     </div>
 
-    <div style="display:flex;gap:0.5rem;margin-bottom:1.5rem;flex-wrap:wrap;">
+    <div data-filter-group style="display:flex;gap:0.5rem;margin-bottom:1.5rem;flex-wrap:wrap;">
       <button class="filter-btn active">Diary</button>
       <button class="filter-btn">Reviews</button>
       <button class="filter-btn">Lists</button>
@@ -2243,7 +2399,7 @@
   <div style="padding:2rem;max-width:1100px;margin:0 auto;">
     <div class="section-head"><h2>Your Gig Diary</h2><a onclick="openModal()">+ Log New Gig</a></div>
     <p style="font-size:0.85rem;color:var(--muted);margin-bottom:1.5rem;">Your complete personal archive of every gig you've attended.</p>
-    <div style="display:flex;gap:0.5rem;margin-bottom:1.5rem;flex-wrap:wrap;">
+    <div data-filter-group style="display:flex;gap:0.5rem;margin-bottom:1.5rem;flex-wrap:wrap;">
       <button class="filter-btn active">All Time</button>
       <button class="filter-btn">2025</button>
       <button class="filter-btn">2024</button>
@@ -2350,125 +2506,6 @@
               <span>👁</span><strong>Lambrini Girls</strong><span style="color:var(--muted);margin-left:auto;font-size:0.72rem;">Brighton</span>
             </div>
           </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ═══════════════════ DISCOVER PAGE ═══════════════════ -->
-<div class="page" id="page-discover">
-  <div class="container">
-    <div class="section-head"><h2>Discover Bands</h2></div>
-    <div class="discover-filters">
-      <button class="filter-btn active">All</button>
-      <button class="filter-btn">Post-Punk</button>
-      <button class="filter-btn">Indie Rock</button>
-      <button class="filter-btn">Electronic</button>
-      <button class="filter-btn">Folk</button>
-      <button class="filter-btn">Metal</button>
-      <button class="filter-btn">Jazz</button>
-      <button class="filter-btn">R&B</button>
-      <button class="filter-btn">⬆ Trending</button>
-      <button class="filter-btn">⭐ Top Rated</button>
-      <button class="filter-btn">🆕 New to GIGR</button>
-    </div>
-
-    <div class="band-grid">
-      <div class="band-card" onclick="showPage('band')">
-        <div class="band-card-art poster-b">YARD ACT</div>
-        <div class="band-card-info">
-          <div class="band-card-name">Yard Act</div>
-          <div class="band-card-genre">Post-Punk · Leeds</div>
-          <div class="band-card-rating">★★★★½ <span style="color:var(--muted)">· 312 logs</span></div>
-        </div>
-      </div>
-      <div class="band-card" onclick="showPage('band')">
-        <div class="band-card-art poster-c">SHAME</div>
-        <div class="band-card-info">
-          <div class="band-card-name">Shame</div>
-          <div class="band-card-genre">Post-Punk · London</div>
-          <div class="band-card-rating">★★★★★ <span style="color:var(--muted)">· 489 logs</span></div>
-        </div>
-      </div>
-      <div class="band-card" onclick="showPage('band')">
-        <div class="band-card-art poster-a">FONTAINES D.C.</div>
-        <div class="band-card-info">
-          <div class="band-card-name">Fontaines D.C.</div>
-          <div class="band-card-genre">Post-Punk · Dublin</div>
-          <div class="band-card-rating">★★★★★ <span style="color:var(--muted)">· 621 logs</span></div>
-        </div>
-      </div>
-      <div class="band-card" onclick="showPage('band')">
-        <div class="band-card-art poster-e">GOAT GIRL</div>
-        <div class="band-card-info">
-          <div class="band-card-name">Goat Girl</div>
-          <div class="band-card-genre">Art-Rock · London</div>
-          <div class="band-card-rating">★★★★ <span style="color:var(--muted)">· 178 logs</span></div>
-        </div>
-      </div>
-      <div class="band-card" onclick="showPage('band')">
-        <div class="band-card-art poster-f">SQUID</div>
-        <div class="band-card-info">
-          <div class="band-card-name">Squid</div>
-          <div class="band-card-genre">Post-Punk · Brighton</div>
-          <div class="band-card-rating">★★★★½ <span style="color:var(--muted)">· 241 logs</span></div>
-        </div>
-      </div>
-      <div class="band-card" onclick="showPage('band')">
-        <div class="band-card-art poster-d">BLACK MIDI</div>
-        <div class="band-card-info">
-          <div class="band-card-name">Black Midi</div>
-          <div class="band-card-genre">Experimental · London</div>
-          <div class="band-card-rating">★★★★ <span style="color:var(--muted)">· 196 logs</span></div>
-        </div>
-      </div>
-      <div class="band-card" onclick="showPage('band')">
-        <div class="band-card-art" style="background:linear-gradient(135deg,#27ae60,#1a1a1a)">WET LEG</div>
-        <div class="band-card-info">
-          <div class="band-card-name">Wet Leg</div>
-          <div class="band-card-genre">Indie Rock · Isle of Wight</div>
-          <div class="band-card-rating">★★★★½ <span style="color:var(--muted)">· 388 logs</span></div>
-        </div>
-      </div>
-      <div class="band-card" onclick="showPage('band')">
-        <div class="band-card-art" style="background:linear-gradient(135deg,#8e44ad,#2c3e50)">WITCH FEVER</div>
-        <div class="band-card-info">
-          <div class="band-card-name">Witch Fever</div>
-          <div class="band-card-genre">Noise-Rock · Manchester</div>
-          <div class="band-card-rating">★★★★ <span style="color:var(--muted)">· 134 logs</span></div>
-        </div>
-      </div>
-      <div class="band-card" onclick="showPage('band')">
-        <div class="band-card-art" style="background:linear-gradient(135deg,#d35400,#2c3e50)">ENGLISH TEACHER</div>
-        <div class="band-card-info">
-          <div class="band-card-name">English Teacher</div>
-          <div class="band-card-genre">Indie Rock · Leeds</div>
-          <div class="band-card-rating">★★★★★ <span style="color:var(--muted)">· 92 logs</span></div>
-        </div>
-      </div>
-      <div class="band-card" onclick="showPage('band')">
-        <div class="band-card-art" style="background:linear-gradient(135deg,#1a1a2e,#c0392b)">DRY CLEANING</div>
-        <div class="band-card-info">
-          <div class="band-card-name">Dry Cleaning</div>
-          <div class="band-card-genre">Post-Punk · London</div>
-          <div class="band-card-rating">★★★★ <span style="color:var(--muted)">· 167 logs</span></div>
-        </div>
-      </div>
-      <div class="band-card" onclick="showPage('band')">
-        <div class="band-card-art" style="background:linear-gradient(135deg,#11998e,#38ef7d)">BAR ITALIA</div>
-        <div class="band-card-info">
-          <div class="band-card-name">Bar Italia</div>
-          <div class="band-card-genre">Indie / Lo-fi · London</div>
-          <div class="band-card-rating">★★★★ <span style="color:var(--muted)">· 143 logs</span></div>
-        </div>
-      </div>
-      <div class="band-card" onclick="showPage('band')">
-        <div class="band-card-art" style="background:linear-gradient(135deg,#f953c6,#b91d73)">LAMBRINI GIRLS</div>
-        <div class="band-card-info">
-          <div class="band-card-name">Lambrini Girls</div>
-          <div class="band-card-genre">Punk · Brighton</div>
-          <div class="band-card-rating">★★★★½ <span style="color:var(--muted)">· 88 logs</span></div>
         </div>
       </div>
     </div>
@@ -2794,7 +2831,7 @@
   <div class="ranked-list">
 
     <!-- Sort / filter bar -->
-    <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:1.5rem;padding-bottom:1rem;border-bottom:2px solid var(--ink);">
+    <div data-filter-group style="display:flex;align-items:center;gap:0.75rem;margin-bottom:1.5rem;padding-bottom:1rem;border-bottom:2px solid var(--ink);">
       <span style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--muted);">Sort by:</span>
       <button class="filter-btn active" style="font-size:0.72rem;">Ranked Order</button>
       <button class="filter-btn" style="font-size:0.72rem;">Date Added</button>
@@ -2952,73 +2989,50 @@
 <div class="page" id="page-bands-dir">
   <div class="bands-dir-hero">
     <div class="bands-dir-inner">
-      <h1>Band Directory</h1>
-      <p>Every band logged on GIGR &mdash; browse, search, deep-dive. <span style="color:#5a5040;">1,204 bands and counting.</span></p>
+      <h1>Bands</h1>
+      <p>Browse, search and deep-dive. <span style="color:#5a5040;">1,204 bands tracked across 312 venues.</span></p>
       <div class="bands-search-bar">
-        <input class="bands-search-input" placeholder="Search bands, genres, hometowns...">
-        <div style="display:flex;gap:0.5rem;">
+        <input class="bands-search-input" placeholder="Search bands, genres, hometowns..." id="bandsDirSearch">
+        <div style="display:flex;gap:0.5rem;flex-wrap:wrap;">
           <button class="filter-btn" style="border-color:rgba(255,255,255,0.2);color:#9a9080;background:transparent;font-size:0.72rem;">&#9650; Most Logged</button>
           <button class="filter-btn" style="border-color:rgba(255,255,255,0.2);color:#9a9080;background:transparent;font-size:0.72rem;">&#9733; Top Rated</button>
           <button class="filter-btn" style="border-color:rgba(255,255,255,0.2);color:#9a9080;background:transparent;font-size:0.72rem;">&#128293; Trending</button>
-          <button class="filter-btn" style="border-color:rgba(255,255,255,0.2);color:#9a9080;background:transparent;font-size:0.72rem;">&#128205; NE-based</button>
+          <button class="filter-btn" style="border-color:rgba(255,255,255,0.2);color:#9a9080;background:transparent;font-size:0.72rem;">&#128205; Local</button>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Genre filter pills -->
-  <div class="cal-filters" style="gap:0.4rem;">
-    <span class="cal-filters-label">Genre:</span>
-    <button class="filter-btn active">All</button>
-    <button class="filter-btn">Post-Punk</button>
-    <button class="filter-btn">Indie Rock</button>
-    <button class="filter-btn">Electronic</button>
-    <button class="filter-btn">Noise-Rock</button>
-    <button class="filter-btn">Folk</button>
-    <button class="filter-btn">Metal</button>
-    <button class="filter-btn">Jazz</button>
-    <button class="filter-btn">Hip-Hop</button>
-    <button class="filter-btn">R&amp;B</button>
+  <!-- Genre + view toggle bar -->
+  <div class="cal-filters" style="gap:0.4rem;justify-content:space-between;">
+    <div style="display:flex;gap:0.4rem;flex-wrap:wrap;align-items:center;">
+      <span class="cal-filters-label">Genre:</span>
+      <button class="filter-btn active">All</button>
+      <button class="filter-btn">Post-Punk</button>
+      <button class="filter-btn">Indie Rock</button>
+      <button class="filter-btn">Electronic</button>
+      <button class="filter-btn">Noise-Rock</button>
+      <button class="filter-btn">Folk</button>
+      <button class="filter-btn">Metal</button>
+      <button class="filter-btn">Jazz</button>
+      <button class="filter-btn">R&amp;B</button>
+    </div>
+    <div style="display:flex;gap:0.4rem;align-items:center;flex-shrink:0;">
+      <span class="cal-filters-label" style="white-space:nowrap;">View:</span>
+      <div class="cal-view-toggle" style="margin-left:0;">
+        <button class="cal-view-btn active" onclick="setBandsView('browse',this)">Browse</button>
+        <button class="cal-view-btn" onclick="setBandsView('directory',this)">A&ndash;Z</button>
+      </div>
+    </div>
   </div>
 
-  <!-- Alpha bar -->
-  <div class="alpha-bar">
-    <div style="font-size:0.68rem;font-weight:700;letter-spacing:0.1em;color:var(--muted);margin-right:0.5rem;line-height:28px;">A–Z:</div>
-    <button class="alpha-btn has-bands active">A</button>
-    <button class="alpha-btn has-bands">B</button>
-    <button class="alpha-btn has-bands">C</button>
-    <button class="alpha-btn has-bands">D</button>
-    <button class="alpha-btn has-bands">E</button>
-    <button class="alpha-btn has-bands">F</button>
-    <button class="alpha-btn has-bands">G</button>
-    <button class="alpha-btn has-bands">H</button>
-    <button class="alpha-btn">I</button>
-    <button class="alpha-btn has-bands">J</button>
-    <button class="alpha-btn">K</button>
-    <button class="alpha-btn has-bands">L</button>
-    <button class="alpha-btn has-bands">M</button>
-    <button class="alpha-btn has-bands">N</button>
-    <button class="alpha-btn">O</button>
-    <button class="alpha-btn has-bands">P</button>
-    <button class="alpha-btn">Q</button>
-    <button class="alpha-btn has-bands">R</button>
-    <button class="alpha-btn has-bands">S</button>
-    <button class="alpha-btn has-bands">T</button>
-    <button class="alpha-btn">U</button>
-    <button class="alpha-btn">V</button>
-    <button class="alpha-btn has-bands">W</button>
-    <button class="alpha-btn">X</button>
-    <button class="alpha-btn has-bands">Y</button>
-    <button class="alpha-btn">Z</button>
-    <button class="alpha-btn has-bands">#</button>
-  </div>
+  <!-- BROWSE VIEW (card grid, like Discover) -->
+  <div id="bandsBrowseView">
+    <div class="bands-dir-body" style="padding-top:1.5rem;">
 
-  <div class="bands-dir-body">
-
-    <!-- Featured / Trending section -->
-    <div style="margin-top:1.5rem;">
+      <!-- Trending featured row -->
       <div class="section-head"><h2>&#128293; Trending This Week</h2></div>
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0.75rem;margin-bottom:2rem;">
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0.75rem;margin-bottom:2.5rem;" id="bandsFeaturedGrid">
         <div class="bands-featured" onclick="showPage('band')">
           <div class="bands-featured-art poster-b">YARD ACT</div>
           <div class="bands-featured-info">
@@ -3044,197 +3058,167 @@
           </div>
         </div>
       </div>
-    </div>
 
-    <!-- Alphabetical directory — A section -->
-    <div class="bands-dir-section">
-      <div class="bands-dir-letter">A</div>
-      <div class="bands-dir-grid">
-        <div class="bands-dir-item" onclick="showPage('band')">
-          <div class="bands-dir-thumb" style="background:linear-gradient(135deg,#1a1a2e,#c0392b)">AF</div>
-          <div>
-            <div class="bands-dir-name">Adult Fiction</div>
-            <div class="bands-dir-sub">Post-Punk &middot; Leeds</div>
-            <div class="bands-dir-rating">&#9733;&#9733;&#9733;&#9733; &middot; 34 logs</div>
-          </div>
+      <!-- Full browse grid -->
+      <div class="section-head"><h2>All Bands</h2><span style="font-size:0.75rem;color:var(--muted);">1,204 bands</span></div>
+      <div class="band-grid">
+        <div class="band-card" onclick="showPage('band')">
+          <div class="band-card-art poster-b">YARD ACT</div>
+          <div class="band-card-info"><div class="band-card-name">Yard Act</div><div class="band-card-genre">Post-Punk · Leeds</div><div class="band-card-rating">&#9733;&#9733;&#9733;&#9733;½ <span style="color:var(--muted)">· 312 logs</span></div></div>
         </div>
-        <div class="bands-dir-item" onclick="showPage('band')">
-          <div class="bands-dir-thumb" style="background:linear-gradient(135deg,#11998e,#38ef7d)">BI</div>
-          <div>
-            <div class="bands-dir-name">Bar Italia</div>
-            <div class="bands-dir-sub">Indie / Lo-fi &middot; London</div>
-            <div class="bands-dir-rating">&#9733;&#9733;&#9733;&#9733; &middot; 143 logs</div>
-          </div>
+        <div class="band-card" onclick="showPage('band')">
+          <div class="band-card-art poster-c">SHAME</div>
+          <div class="band-card-info"><div class="band-card-name">Shame</div><div class="band-card-genre">Post-Punk · London</div><div class="band-card-rating">&#9733;&#9733;&#9733;&#9733;&#9733; <span style="color:var(--muted)">· 489 logs</span></div></div>
         </div>
-        <div class="bands-dir-item" onclick="showPage('band')">
-          <div class="bands-dir-thumb" style="background:linear-gradient(135deg,#2c3e50,#e74c3c)">BM</div>
-          <div>
-            <div class="bands-dir-name">Black Midi</div>
-            <div class="bands-dir-sub">Experimental &middot; London</div>
-            <div class="bands-dir-rating">&#9733;&#9733;&#9733;&#9733; &middot; 196 logs</div>
-          </div>
+        <div class="band-card" onclick="showPage('band')">
+          <div class="band-card-art poster-a">FONTAINES D.C.</div>
+          <div class="band-card-info"><div class="band-card-name">Fontaines D.C.</div><div class="band-card-genre">Post-Punk · Dublin</div><div class="band-card-rating">&#9733;&#9733;&#9733;&#9733;&#9733; <span style="color:var(--muted)">· 621 logs</span></div></div>
         </div>
-        <div class="bands-dir-item" onclick="showPage('band')">
-          <div class="bands-dir-thumb" style="background:linear-gradient(135deg,#8e44ad,#1a5276)">BC</div>
-          <div>
-            <div class="bands-dir-name">Brooke Combe</div>
-            <div class="bands-dir-sub">Soul / Jazz &middot; Edinburgh</div>
-            <div class="bands-dir-rating">&#9733;&#9733;&#9733;&#9733;½ &middot; 58 logs</div>
-          </div>
+        <div class="band-card" onclick="showPage('band')">
+          <div class="band-card-art poster-e">GOAT GIRL</div>
+          <div class="band-card-info"><div class="band-card-name">Goat Girl</div><div class="band-card-genre">Art-Rock · London</div><div class="band-card-rating">&#9733;&#9733;&#9733;&#9733; <span style="color:var(--muted)">· 178 logs</span></div></div>
+        </div>
+        <div class="band-card" onclick="showPage('band')">
+          <div class="band-card-art poster-f">SQUID</div>
+          <div class="band-card-info"><div class="band-card-name">Squid</div><div class="band-card-genre">Post-Punk · Brighton</div><div class="band-card-rating">&#9733;&#9733;&#9733;&#9733;½ <span style="color:var(--muted)">· 241 logs</span></div></div>
+        </div>
+        <div class="band-card" onclick="showPage('band')">
+          <div class="band-card-art poster-d">BLACK MIDI</div>
+          <div class="band-card-info"><div class="band-card-name">Black Midi</div><div class="band-card-genre">Experimental · London</div><div class="band-card-rating">&#9733;&#9733;&#9733;&#9733; <span style="color:var(--muted)">· 196 logs</span></div></div>
+        </div>
+        <div class="band-card" onclick="showPage('band')">
+          <div class="band-card-art" style="background:linear-gradient(135deg,#27ae60,#1a1a1a)">WET LEG</div>
+          <div class="band-card-info"><div class="band-card-name">Wet Leg</div><div class="band-card-genre">Indie Rock · Isle of Wight</div><div class="band-card-rating">&#9733;&#9733;&#9733;&#9733;½ <span style="color:var(--muted)">· 388 logs</span></div></div>
+        </div>
+        <div class="band-card" onclick="showPage('band')">
+          <div class="band-card-art" style="background:linear-gradient(135deg,#8e44ad,#2c3e50)">WITCH FEVER</div>
+          <div class="band-card-info"><div class="band-card-name">Witch Fever</div><div class="band-card-genre">Noise-Rock · Manchester</div><div class="band-card-rating">&#9733;&#9733;&#9733;&#9733; <span style="color:var(--muted)">· 134 logs</span></div></div>
+        </div>
+        <div class="band-card" onclick="showPage('band')">
+          <div class="band-card-art" style="background:linear-gradient(135deg,#d35400,#2c3e50)">ENGLISH TEACHER</div>
+          <div class="band-card-info"><div class="band-card-name">English Teacher</div><div class="band-card-genre">Indie Rock · Leeds</div><div class="band-card-rating">&#9733;&#9733;&#9733;&#9733;&#9733; <span style="color:var(--muted)">· 92 logs</span></div></div>
+        </div>
+        <div class="band-card" onclick="showPage('band')">
+          <div class="band-card-art" style="background:linear-gradient(135deg,#1a1a2e,#c0392b)">DRY CLEANING</div>
+          <div class="band-card-info"><div class="band-card-name">Dry Cleaning</div><div class="band-card-genre">Post-Punk · London</div><div class="band-card-rating">&#9733;&#9733;&#9733;&#9733; <span style="color:var(--muted)">· 167 logs</span></div></div>
+        </div>
+        <div class="band-card" onclick="showPage('band')">
+          <div class="band-card-art" style="background:linear-gradient(135deg,#11998e,#38ef7d)">BAR ITALIA</div>
+          <div class="band-card-info"><div class="band-card-name">Bar Italia</div><div class="band-card-genre">Indie / Lo-fi · London</div><div class="band-card-rating">&#9733;&#9733;&#9733;&#9733; <span style="color:var(--muted)">· 143 logs</span></div></div>
+        </div>
+        <div class="band-card" onclick="showPage('band')">
+          <div class="band-card-art" style="background:linear-gradient(135deg,#f953c6,#b91d73)">LAMBRINI GIRLS</div>
+          <div class="band-card-info"><div class="band-card-name">Lambrini Girls</div><div class="band-card-genre">Punk · Brighton</div><div class="band-card-rating">&#9733;&#9733;&#9733;&#9733;½ <span style="color:var(--muted)">· 88 logs</span></div></div>
         </div>
       </div>
-    </div>
 
-    <!-- D section -->
-    <div class="bands-dir-section">
-      <div class="bands-dir-letter">D</div>
-      <div class="bands-dir-grid">
-        <div class="bands-dir-item" onclick="showPage('band')">
-          <div class="bands-dir-thumb" style="background:linear-gradient(135deg,#1a1a2e,#c0392b)">DC</div>
-          <div>
-            <div class="bands-dir-name">Dry Cleaning</div>
-            <div class="bands-dir-sub">Post-Punk &middot; London</div>
-            <div class="bands-dir-rating">&#9733;&#9733;&#9733;&#9733; &middot; 167 logs</div>
-          </div>
-        </div>
-        <div class="bands-dir-item" onclick="showPage('band')">
-          <div class="bands-dir-thumb" style="background:linear-gradient(135deg,#f39c12,#e74c3c)">DT</div>
-          <div>
-            <div class="bands-dir-name">Dead Tooth</div>
-            <div class="bands-dir-sub">Punk &middot; Newcastle</div>
-            <div class="bands-dir-rating">&#9733;&#9733;&#9733;&#9733; &middot; 28 logs</div>
-          </div>
-        </div>
+      <div style="text-align:center;padding:2.5rem 0 1rem;">
+        <button class="btn btn-outline" style="border-color:var(--border);color:var(--muted);background:white;">Load more bands</button>
       </div>
     </div>
-
-    <!-- E section -->
-    <div class="bands-dir-section">
-      <div class="bands-dir-letter">E</div>
-      <div class="bands-dir-grid">
-        <div class="bands-dir-item" onclick="showPage('band')">
-          <div class="bands-dir-thumb" style="background:linear-gradient(135deg,#d35400,#2c3e50)">ET</div>
-          <div>
-            <div class="bands-dir-name">English Teacher</div>
-            <div class="bands-dir-sub">Indie Rock &middot; Leeds</div>
-            <div class="bands-dir-rating">&#9733;&#9733;&#9733;&#9733;&#9733; &middot; 92 logs</div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- F section -->
-    <div class="bands-dir-section">
-      <div class="bands-dir-letter">F</div>
-      <div class="bands-dir-grid">
-        <div class="bands-dir-item" onclick="showPage('band')">
-          <div class="bands-dir-thumb poster-a">FD</div>
-          <div>
-            <div class="bands-dir-name">Fontaines D.C.</div>
-            <div class="bands-dir-sub">Post-Punk &middot; Dublin</div>
-            <div class="bands-dir-rating">&#9733;&#9733;&#9733;&#9733;&#9733; &middot; 621 logs</div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- G section -->
-    <div class="bands-dir-section">
-      <div class="bands-dir-letter">G</div>
-      <div class="bands-dir-grid">
-        <div class="bands-dir-item" onclick="showPage('band')">
-          <div class="bands-dir-thumb poster-e">GG</div>
-          <div>
-            <div class="bands-dir-name">Goat Girl</div>
-            <div class="bands-dir-sub">Art-Rock &middot; London</div>
-            <div class="bands-dir-rating">&#9733;&#9733;&#9733;&#9733; &middot; 178 logs</div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- L section -->
-    <div class="bands-dir-section">
-      <div class="bands-dir-letter">L</div>
-      <div class="bands-dir-grid">
-        <div class="bands-dir-item" onclick="showPage('band')">
-          <div class="bands-dir-thumb" style="background:linear-gradient(135deg,#f953c6,#b91d73)">LG</div>
-          <div>
-            <div class="bands-dir-name">Lambrini Girls</div>
-            <div class="bands-dir-sub">Punk &middot; Brighton</div>
-            <div class="bands-dir-rating">&#9733;&#9733;&#9733;&#9733;½ &middot; 88 logs</div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- S section -->
-    <div class="bands-dir-section">
-      <div class="bands-dir-letter">S</div>
-      <div class="bands-dir-grid">
-        <div class="bands-dir-item" onclick="showPage('band')">
-          <div class="bands-dir-thumb poster-c">SH</div>
-          <div>
-            <div class="bands-dir-name">Shame</div>
-            <div class="bands-dir-sub">Post-Punk &middot; London</div>
-            <div class="bands-dir-rating">&#9733;&#9733;&#9733;&#9733;&#9733; &middot; 489 logs</div>
-          </div>
-        </div>
-        <div class="bands-dir-item" onclick="showPage('band')">
-          <div class="bands-dir-thumb poster-f">SQ</div>
-          <div>
-            <div class="bands-dir-name">Squid</div>
-            <div class="bands-dir-sub">Post-Punk &middot; Brighton</div>
-            <div class="bands-dir-rating">&#9733;&#9733;&#9733;&#9733;½ &middot; 241 logs</div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- W section -->
-    <div class="bands-dir-section">
-      <div class="bands-dir-letter">W</div>
-      <div class="bands-dir-grid">
-        <div class="bands-dir-item" onclick="showPage('band')">
-          <div class="bands-dir-thumb" style="background:linear-gradient(135deg,#27ae60,#1a1a1a)">WL</div>
-          <div>
-            <div class="bands-dir-name">Wet Leg</div>
-            <div class="bands-dir-sub">Indie Rock &middot; Isle of Wight</div>
-            <div class="bands-dir-rating">&#9733;&#9733;&#9733;&#9733;½ &middot; 388 logs</div>
-          </div>
-        </div>
-        <div class="bands-dir-item" onclick="showPage('band')">
-          <div class="bands-dir-thumb" style="background:linear-gradient(135deg,#8e44ad,#2c3e50)">WF</div>
-          <div>
-            <div class="bands-dir-name">Witch Fever</div>
-            <div class="bands-dir-sub">Noise-Rock &middot; Manchester</div>
-            <div class="bands-dir-rating">&#9733;&#9733;&#9733;&#9733; &middot; 134 logs</div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Y section -->
-    <div class="bands-dir-section">
-      <div class="bands-dir-letter">Y</div>
-      <div class="bands-dir-grid">
-        <div class="bands-dir-item" onclick="showPage('band')">
-          <div class="bands-dir-thumb poster-b">YA</div>
-          <div>
-            <div class="bands-dir-name">Yard Act</div>
-            <div class="bands-dir-sub">Post-Punk &middot; Leeds</div>
-            <div class="bands-dir-rating">&#9733;&#9733;&#9733;&#9733;½ &middot; 312 logs</div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div style="text-align:center;padding:2.5rem 0 1rem;">
-      <button class="btn btn-outline" style="border-color:var(--border);color:var(--muted);background:white;">Load more bands (1,180 remaining)</button>
-    </div>
-
   </div>
-</div>
+
+  <!-- DIRECTORY VIEW (A–Z, hidden by default) -->
+  <div id="bandsDirectoryView" style="display:none;">
+
+    <!-- Alpha bar -->
+    <div class="alpha-bar">
+      <div style="font-size:0.68rem;font-weight:700;letter-spacing:0.1em;color:var(--muted);margin-right:0.5rem;line-height:28px;">A&ndash;Z:</div>
+      <button class="alpha-btn has-bands active">A</button>
+      <button class="alpha-btn has-bands">B</button>
+      <button class="alpha-btn has-bands">C</button>
+      <button class="alpha-btn has-bands">D</button>
+      <button class="alpha-btn has-bands">E</button>
+      <button class="alpha-btn has-bands">F</button>
+      <button class="alpha-btn has-bands">G</button>
+      <button class="alpha-btn has-bands">H</button>
+      <button class="alpha-btn">I</button>
+      <button class="alpha-btn has-bands">J</button>
+      <button class="alpha-btn">K</button>
+      <button class="alpha-btn has-bands">L</button>
+      <button class="alpha-btn has-bands">M</button>
+      <button class="alpha-btn has-bands">N</button>
+      <button class="alpha-btn">O</button>
+      <button class="alpha-btn has-bands">P</button>
+      <button class="alpha-btn">Q</button>
+      <button class="alpha-btn has-bands">R</button>
+      <button class="alpha-btn has-bands">S</button>
+      <button class="alpha-btn has-bands">T</button>
+      <button class="alpha-btn">U</button>
+      <button class="alpha-btn">V</button>
+      <button class="alpha-btn has-bands">W</button>
+      <button class="alpha-btn">X</button>
+      <button class="alpha-btn has-bands">Y</button>
+      <button class="alpha-btn">Z</button>
+      <button class="alpha-btn has-bands">#</button>
+    </div>
+
+    <div class="bands-dir-body">
+      <div class="bands-dir-section">
+        <div class="bands-dir-letter">A</div>
+        <div class="bands-dir-grid">
+          <div class="bands-dir-item" onclick="showPage('band')"><div class="bands-dir-thumb" style="background:linear-gradient(135deg,#1a1a2e,#c0392b)">AF</div><div><div class="bands-dir-name">Adult Fiction</div><div class="bands-dir-sub">Post-Punk · Leeds</div><div class="bands-dir-rating">&#9733;&#9733;&#9733;&#9733; · 34 logs</div></div></div>
+          <div class="bands-dir-item" onclick="showPage('band')"><div class="bands-dir-thumb" style="background:linear-gradient(135deg,#11998e,#38ef7d)">BI</div><div><div class="bands-dir-name">Bar Italia</div><div class="bands-dir-sub">Indie / Lo-fi · London</div><div class="bands-dir-rating">&#9733;&#9733;&#9733;&#9733; · 143 logs</div></div></div>
+          <div class="bands-dir-item" onclick="showPage('band')"><div class="bands-dir-thumb" style="background:linear-gradient(135deg,#2c3e50,#e74c3c)">BM</div><div><div class="bands-dir-name">Black Midi</div><div class="bands-dir-sub">Experimental · London</div><div class="bands-dir-rating">&#9733;&#9733;&#9733;&#9733; · 196 logs</div></div></div>
+          <div class="bands-dir-item" onclick="showPage('band')"><div class="bands-dir-thumb" style="background:linear-gradient(135deg,#8e44ad,#1a5276)">BC</div><div><div class="bands-dir-name">Brooke Combe</div><div class="bands-dir-sub">Soul / Jazz · Edinburgh</div><div class="bands-dir-rating">&#9733;&#9733;&#9733;&#9733;½ · 58 logs</div></div></div>
+        </div>
+      </div>
+      <div class="bands-dir-section">
+        <div class="bands-dir-letter">D</div>
+        <div class="bands-dir-grid">
+          <div class="bands-dir-item" onclick="showPage('band')"><div class="bands-dir-thumb" style="background:linear-gradient(135deg,#1a1a2e,#c0392b)">DC</div><div><div class="bands-dir-name">Dry Cleaning</div><div class="bands-dir-sub">Post-Punk · London</div><div class="bands-dir-rating">&#9733;&#9733;&#9733;&#9733; · 167 logs</div></div></div>
+          <div class="bands-dir-item" onclick="showPage('band')"><div class="bands-dir-thumb" style="background:linear-gradient(135deg,#f39c12,#e74c3c)">DT</div><div><div class="bands-dir-name">Dead Tooth</div><div class="bands-dir-sub">Punk · Newcastle</div><div class="bands-dir-rating">&#9733;&#9733;&#9733;&#9733; · 28 logs</div></div></div>
+        </div>
+      </div>
+      <div class="bands-dir-section">
+        <div class="bands-dir-letter">E</div>
+        <div class="bands-dir-grid">
+          <div class="bands-dir-item" onclick="showPage('band')"><div class="bands-dir-thumb" style="background:linear-gradient(135deg,#d35400,#2c3e50)">ET</div><div><div class="bands-dir-name">English Teacher</div><div class="bands-dir-sub">Indie Rock · Leeds</div><div class="bands-dir-rating">&#9733;&#9733;&#9733;&#9733;&#9733; · 92 logs</div></div></div>
+        </div>
+      </div>
+      <div class="bands-dir-section">
+        <div class="bands-dir-letter">F</div>
+        <div class="bands-dir-grid">
+          <div class="bands-dir-item" onclick="showPage('band')"><div class="bands-dir-thumb poster-a">FD</div><div><div class="bands-dir-name">Fontaines D.C.</div><div class="bands-dir-sub">Post-Punk · Dublin</div><div class="bands-dir-rating">&#9733;&#9733;&#9733;&#9733;&#9733; · 621 logs</div></div></div>
+        </div>
+      </div>
+      <div class="bands-dir-section">
+        <div class="bands-dir-letter">G</div>
+        <div class="bands-dir-grid">
+          <div class="bands-dir-item" onclick="showPage('band')"><div class="bands-dir-thumb poster-e">GG</div><div><div class="bands-dir-name">Goat Girl</div><div class="bands-dir-sub">Art-Rock · London</div><div class="bands-dir-rating">&#9733;&#9733;&#9733;&#9733; · 178 logs</div></div></div>
+        </div>
+      </div>
+      <div class="bands-dir-section">
+        <div class="bands-dir-letter">L</div>
+        <div class="bands-dir-grid">
+          <div class="bands-dir-item" onclick="showPage('band')"><div class="bands-dir-thumb" style="background:linear-gradient(135deg,#f953c6,#b91d73)">LG</div><div><div class="bands-dir-name">Lambrini Girls</div><div class="bands-dir-sub">Punk · Brighton</div><div class="bands-dir-rating">&#9733;&#9733;&#9733;&#9733;½ · 88 logs</div></div></div>
+        </div>
+      </div>
+      <div class="bands-dir-section">
+        <div class="bands-dir-letter">S</div>
+        <div class="bands-dir-grid">
+          <div class="bands-dir-item" onclick="showPage('band')"><div class="bands-dir-thumb poster-c">SH</div><div><div class="bands-dir-name">Shame</div><div class="bands-dir-sub">Post-Punk · London</div><div class="bands-dir-rating">&#9733;&#9733;&#9733;&#9733;&#9733; · 489 logs</div></div></div>
+          <div class="bands-dir-item" onclick="showPage('band')"><div class="bands-dir-thumb poster-f">SQ</div><div><div class="bands-dir-name">Squid</div><div class="bands-dir-sub">Post-Punk · Brighton</div><div class="bands-dir-rating">&#9733;&#9733;&#9733;&#9733;½ · 241 logs</div></div></div>
+        </div>
+      </div>
+      <div class="bands-dir-section">
+        <div class="bands-dir-letter">W</div>
+        <div class="bands-dir-grid">
+          <div class="bands-dir-item" onclick="showPage('band')"><div class="bands-dir-thumb" style="background:linear-gradient(135deg,#27ae60,#1a1a1a)">WL</div><div><div class="bands-dir-name">Wet Leg</div><div class="bands-dir-sub">Indie Rock · Isle of Wight</div><div class="bands-dir-rating">&#9733;&#9733;&#9733;&#9733;½ · 388 logs</div></div></div>
+          <div class="bands-dir-item" onclick="showPage('band')"><div class="bands-dir-thumb" style="background:linear-gradient(135deg,#8e44ad,#2c3e50)">WF</div><div><div class="bands-dir-name">Witch Fever</div><div class="bands-dir-sub">Noise-Rock · Manchester</div><div class="bands-dir-rating">&#9733;&#9733;&#9733;&#9733; · 134 logs</div></div></div>
+        </div>
+      </div>
+      <div class="bands-dir-section">
+        <div class="bands-dir-letter">Y</div>
+        <div class="bands-dir-grid">
+          <div class="bands-dir-item" onclick="showPage('band')"><div class="bands-dir-thumb poster-b">YA</div><div><div class="bands-dir-name">Yard Act</div><div class="bands-dir-sub">Post-Punk · Leeds</div><div class="bands-dir-rating">&#9733;&#9733;&#9733;&#9733;½ · 312 logs</div></div></div>
+        </div>
+      </div>
+      <div style="text-align:center;padding:2.5rem 0 1rem;">
+        <button class="btn btn-outline" style="border-color:var(--border);color:var(--muted);background:white;">Load more bands (1,180 remaining)</button>
+      </div>
+    </div>
+  </div>
 
 <!-- ═══════════════════ CALENDAR PAGE ═══════════════════ -->
 <div class="page" id="page-calendar">
@@ -3646,6 +3630,57 @@
   </div>
 </div>
 
+<!-- ═══════════════════ SEARCH OVERLAY ═══════════════════ -->
+<div class="search-overlay" id="searchOverlay" onclick="handleSearchOverlayClick(event)">
+  <div class="search-box" id="searchBox">
+    <div class="search-input-row">
+      <span class="search-icon">&#128269;</span>
+      <input class="search-input-main" id="searchInput" placeholder="Search bands, venues, reviews, lists..." oninput="renderSearchResults(this.value)" autocomplete="off">
+      <button class="search-close-btn" onclick="closeSearch()">Esc</button>
+    </div>
+    <div class="search-results" id="searchResults">
+      <!-- Default state -->
+      <div class="search-section-label">Trending Searches</div>
+      <div class="search-result-item" onclick="closeSearch();showPage('band')">
+        <div class="search-result-thumb poster-b">YA</div>
+        <div><div class="search-result-name">Yard Act</div><div class="search-result-sub">Post-Punk · Leeds · 312 logs</div></div>
+        <span class="search-result-type">Band</span>
+      </div>
+      <div class="search-result-item" onclick="closeSearch();showPage('band')">
+        <div class="search-result-thumb poster-c">SH</div>
+        <div><div class="search-result-name">Shame</div><div class="search-result-sub">Post-Punk · London · 489 logs</div></div>
+        <span class="search-result-type">Band</span>
+      </div>
+      <div class="search-result-item" onclick="closeSearch();showPage('band')">
+        <div class="search-result-thumb poster-f">SQ</div>
+        <div><div class="search-result-name">Squid</div><div class="search-result-sub">Post-Punk · Brighton · 241 logs</div></div>
+        <span class="search-result-type">Band</span>
+      </div>
+      <div class="search-section-label">Recent Venues</div>
+      <div class="search-result-item" onclick="closeSearch()">
+        <div class="search-result-thumb" style="background:var(--ink);font-size:0.7rem;">&#127968;</div>
+        <div><div class="search-result-name">The Cluny</div><div class="search-result-sub">Ouseburn, Newcastle · 42 gigs logged</div></div>
+        <span class="search-result-type">Venue</span>
+      </div>
+      <div class="search-result-item" onclick="closeSearch()">
+        <div class="search-result-thumb" style="background:var(--ink);font-size:0.7rem;">&#127968;</div>
+        <div><div class="search-result-name">Boiler Shop</div><div class="search-result-sub">Newcastle · 28 gigs logged</div></div>
+        <span class="search-result-type">Venue</span>
+      </div>
+      <div class="search-result-item" onclick="closeSearch()">
+        <div class="search-result-thumb" style="background:var(--ink);font-size:0.7rem;">&#127968;</div>
+        <div><div class="search-result-name">Think Tank?</div><div class="search-result-sub">Newcastle · 19 gigs logged</div></div>
+        <span class="search-result-type">Venue</span>
+      </div>
+    </div>
+    <div class="search-footer">
+      <span><kbd>&#9166;</kbd> to select</span>
+      <span><kbd>&#8593;</kbd><kbd>&#8595;</kbd> to navigate</span>
+      <span><kbd>Esc</kbd> to close</span>
+    </div>
+  </div>
+</div>
+
 <!-- ═══════════════════ LOG GIG MODAL ═══════════════════ -->
 <div class="modal-overlay" id="modal">
   <div class="modal">
@@ -3768,9 +3803,12 @@
 
   document.querySelectorAll('.filter-btn').forEach(btn => {
     btn.addEventListener('click', function() {
-      this.closest('.discover-filters, div').querySelectorAll('.filter-btn')
-        .forEach(b => b.classList.remove('active'));
-      this.classList.add('active');
+      // Only toggle siblings within the immediate filter container
+      const container = this.closest('.discover-filters, .cal-filters, .bands-search-bar > div, [data-filter-group]');
+      if (container) {
+        container.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+      }
     });
   });
 
@@ -3929,6 +3967,101 @@
       this.classList.add('active');
     });
   });
+
+  // ═══ BANDS VIEW TOGGLE ═══
+  function setBandsView(view, btn) {
+    document.querySelectorAll('.cal-view-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('bandsBrowseView').style.display    = view === 'browse'    ? '' : 'none';
+    document.getElementById('bandsDirectoryView').style.display = view === 'directory' ? '' : 'none';
+  }
+
+  // ═══ SEARCH ═══
+  const searchData = [
+    { name:'Yard Act',        sub:'Post-Punk · Leeds · 312 logs',    type:'Band',   thumb:'poster-b', page:'band' },
+    { name:'Shame',           sub:'Post-Punk · London · 489 logs',   type:'Band',   thumb:'poster-c', page:'band' },
+    { name:'Fontaines D.C.',  sub:'Post-Punk · Dublin · 621 logs',   type:'Band',   thumb:'poster-a', page:'band' },
+    { name:'Squid',           sub:'Post-Punk · Brighton · 241 logs', type:'Band',   thumb:'poster-f', page:'band' },
+    { name:'Goat Girl',       sub:'Art-Rock · London · 178 logs',    type:'Band',   thumb:'poster-e', page:'band' },
+    { name:'Wet Leg',         sub:'Indie Rock · Isle of Wight',      type:'Band',   thumb:'',         page:'band' },
+    { name:'Dry Cleaning',    sub:'Post-Punk · London · 167 logs',   type:'Band',   thumb:'',         page:'band' },
+    { name:'English Teacher', sub:'Indie Rock · Leeds · 92 logs',    type:'Band',   thumb:'',         page:'band' },
+    { name:'Lambrini Girls',  sub:'Punk · Brighton · 88 logs',       type:'Band',   thumb:'',         page:'band' },
+    { name:'Witch Fever',     sub:'Noise-Rock · Manchester',         type:'Band',   thumb:'',         page:'band' },
+    { name:'The Cluny',       sub:'Ouseburn, Newcastle · 42 gigs',   type:'Venue',  thumb:'',         page:null   },
+    { name:'Boiler Shop',     sub:'Newcastle · 28 gigs logged',      type:'Venue',  thumb:'',         page:null   },
+    { name:'Think Tank?',     sub:'Newcastle · 19 gigs logged',      type:'Venue',  thumb:'',         page:null   },
+    { name:'NX Newcastle',    sub:'Newcastle · 14 gigs logged',      type:'Venue',  thumb:'',         page:null   },
+    { name:'Best NE Gigs of 2025', sub:'List by Kate M. · 28 entries', type:'List', thumb:'', page:'list-detail' },
+    { name:'Best Venues in the North East', sub:'List by Paul B.', type:'List', thumb:'', page:'list-detail' },
+    { name:'Post-Punk Revival', sub:'List by Sarah G. · 44 entries', type:'List', thumb:'', page:'list-detail' },
+  ];
+
+  function openSearch() {
+    document.getElementById('searchOverlay').classList.add('open');
+    document.body.style.overflow = 'hidden';
+    setTimeout(() => document.getElementById('searchInput').focus(), 50);
+  }
+
+  function closeSearch() {
+    document.getElementById('searchOverlay').classList.remove('open');
+    document.body.style.overflow = '';
+    document.getElementById('searchInput').value = '';
+    renderSearchResults('');
+  }
+
+  function handleSearchOverlayClick(e) {
+    if (e.target === document.getElementById('searchOverlay')) closeSearch();
+  }
+
+  function renderSearchResults(query) {
+    const container = document.getElementById('searchResults');
+    if (!query.trim()) {
+      // Reset to default trending state
+      container.innerHTML = `
+        <div class="search-section-label">Trending Searches</div>
+        ${searchData.slice(0,3).map(r => resultHTML(r)).join('')}
+        <div class="search-section-label">Recent Venues</div>
+        ${searchData.filter(r=>r.type==='Venue').slice(0,3).map(r => resultHTML(r)).join('')}`;
+      return;
+    }
+    const q = query.toLowerCase();
+    const matches = searchData.filter(r =>
+      r.name.toLowerCase().includes(q) || r.sub.toLowerCase().includes(q)
+    );
+    if (!matches.length) {
+      container.innerHTML = `<div class="search-empty">No results for "<strong>${query}</strong>"<br><span style="font-size:0.78rem;color:var(--muted);">Try a band name, venue or genre</span></div>`;
+      return;
+    }
+    const bands  = matches.filter(r => r.type === 'Band');
+    const venues = matches.filter(r => r.type === 'Venue');
+    const lists  = matches.filter(r => r.type === 'List');
+    let html = '';
+    if (bands.length)  html += `<div class="search-section-label">Bands</div>`  + bands.map(resultHTML).join('');
+    if (venues.length) html += `<div class="search-section-label">Venues</div>` + venues.map(resultHTML).join('');
+    if (lists.length)  html += `<div class="search-section-label">Lists</div>`  + lists.map(resultHTML).join('');
+    container.innerHTML = html;
+  }
+
+  function resultHTML(r) {
+    const thumbStyle = r.thumb
+      ? `class="search-result-thumb ${r.thumb}"`
+      : `class="search-result-thumb" style="background:var(--ink);font-size:0.7rem;"`;
+    const icon = r.type === 'Venue' ? '&#127968;' : r.type === 'List' ? '&#9776;' : r.name.slice(0,2).toUpperCase();
+    const inner = r.thumb ? r.name.slice(0,2).toUpperCase() : icon;
+    const action = r.page ? `closeSearch();showPage('${r.page}')` : `closeSearch()`;
+    return `<div class="search-result-item" onclick="${action}">
+      <div ${thumbStyle}>${inner}</div>
+      <div><div class="search-result-name">${r.name}</div><div class="search-result-sub">${r.sub}</div></div>
+      <span class="search-result-type">${r.type}</span>
+    </div>`;
+  }
+
+  // Keyboard shortcut: Cmd/Ctrl+K
+  document.addEventListener('keydown', e => {
+    if ((e.metaKey || e.ctrlKey) && e.key === 'k') { e.preventDefault(); openSearch(); }
+    if (e.key === 'Escape') { closeSearch(); closeModal(); }
+  });
 </script>
 <!-- ═══════════════════ FOOTER ═══════════════════ -->
 <footer class="site-footer">
@@ -3952,7 +4085,7 @@
       <div>
         <div class="footer-col-head">Explore</div>
         <div class="footer-links">
-          <a onclick="showPage('discover')">Discover Bands</a>
+          <a onclick="showPage('bands-dir')">Browse Bands</a>
           <a onclick="showPage('bands-dir')">Band Directory</a>
           <a onclick="showPage('lists')">Community Lists</a>
           <a onclick="showPage('calendar')">Gig Calendar</a>
